@@ -1,0 +1,14 @@
+# Elciess Auth-Controll API
+##### Tecnologies: Typescript, Node, Express, Jest
+
+<br />
+
+### Why i made this project ? What is your purpose ?
+Its an API to register users and to authenticate them in any other Elciess service.
+
+### What this project have to show to you ?
+TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
+
+### So, what this project do ?
+1. [Sign-Up](./requirements/sign-up.md)
+2. [Login](./requirements/login.md)
