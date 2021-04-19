@@ -1,20 +1,31 @@
-import { RegisterUserRepository, LoadUserByEmailRepository } from '@/data/protocols'
+import { RegisterUserRepository, LoadUserByEmailRepository, Hasher } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
-import { mockRegisterUserParams } from '@/tests/domain/mocks/mock-register-user-params'
+import { mockRegisterUserParams } from '@/tests/domain/mocks'
 import { mockRegisterUserRepositoryStub, mockLoadUserByEmailRepositoryStub, mockLoadUserByEmailResult } from '@/tests/data/mocks'
+
+const mockHasherStub = (): Hasher => {
+  class HasherStub implements Hasher {
+    async hash (plaintext: string): Promise<string> {
+      return await Promise.resolve('hashed_password')
+    }
+  }
+  return new HasherStub()
+}
 
 type SutTypes = {
   sut: DbRegisterUser
   registerUserRepositoryStub: RegisterUserRepository
   loadUserByEmailRepositoryStub: LoadUserByEmailRepository
+  hasherStub: Hasher
 }
 
 const makeSut = (): SutTypes => {
   const registerUserRepositoryStub = mockRegisterUserRepositoryStub()
   const loadUserByEmailRepositoryStub = mockLoadUserByEmailRepositoryStub()
-  const sut = new DbRegisterUser(registerUserRepositoryStub, loadUserByEmailRepositoryStub)
+  const hasherStub = mockHasherStub()
+  const sut = new DbRegisterUser(registerUserRepositoryStub, loadUserByEmailRepositoryStub, hasherStub)
   jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockImplementation(async () => await Promise.resolve(null))
-  return { sut, registerUserRepositoryStub, loadUserByEmailRepositoryStub }
+  return { sut, registerUserRepositoryStub, loadUserByEmailRepositoryStub, hasherStub }
 }
 
 describe('DbRegisterUser', () => {
@@ -39,7 +50,7 @@ describe('DbRegisterUser', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call loadUserByEmailRepository with correct values', async () => {
+  test('Should call loadUserByEmailRepository with correct value', async () => {
     const { sut, loadUserByEmailRepositoryStub } = makeSut()
     const loadByEmailSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
     await sut.register(mockRegisterUserParams())
@@ -58,5 +69,12 @@ describe('DbRegisterUser', () => {
     jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.register(mockRegisterUserParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call hasher with correct value', async () => {
+    const { sut, hasherStub } = makeSut()
+    const loadByEmailSpy = jest.spyOn(hasherStub, 'hash')
+    await sut.register(mockRegisterUserParams())
+    expect(loadByEmailSpy).toBeCalledWith(mockRegisterUserParams().password)
   })
 })
