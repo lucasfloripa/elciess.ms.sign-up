@@ -77,4 +77,11 @@ describe('DbRegisterUser', () => {
     await sut.register(mockRegisterUserParams())
     expect(loadByEmailSpy).toBeCalledWith(mockRegisterUserParams().password)
   })
+
+  test('Should throw if hasher throws', async () => {
+    const { sut, hasherStub } = makeSut()
+    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.register(mockRegisterUserParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
