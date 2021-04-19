@@ -6,7 +6,13 @@ export class SignUpController implements Controller {
   ) {}
 
   async handle (request: SignUpController.Params): Promise<HttpResponse> {
-    this.validation.validate(request)
+    const error = this.validation.validate(request)
+    if (error) {
+      return {
+        statusCode: 400,
+        body: new Error()
+      }
+    }
     return null
   }
 }
