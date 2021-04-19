@@ -1,6 +1,7 @@
 import { RegisterUserRepository } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
-import { mockRegisterUserRepositoryStub } from '../mocks/mock-register-user-repository'
+import { mockRegisterUserParams } from '@/tests/domain/mocks/mock-register-user-params'
+import { mockRegisterUserRepositoryStub } from '@/tests/data/mocks/mock-register-user-repository'
 
 type SutTypes = {
   sut: DbRegisterUser
@@ -17,13 +18,7 @@ describe('DbRegisterUser', () => {
   test('Should call registerUserRepository with correct values', async () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
-    await sut.register({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
-    expect(registerSpy).toBeCalledWith({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    await sut.register(mockRegisterUserParams())
+    expect(registerSpy).toBeCalledWith(mockRegisterUserParams())
   })
 })
