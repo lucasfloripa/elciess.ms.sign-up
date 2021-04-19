@@ -7,7 +7,10 @@ export class DbRegisterUser implements RegisterUser {
   ) {}
 
   async register (registerUserParams: RegisterUser.Params): Promise<boolean> {
-    await this.registerUserRepository.register(registerUserParams)
+    const user = await this.registerUserRepository.register(registerUserParams)
+    if (!user) {
+      return false
+    }
     return null
   }
 }
