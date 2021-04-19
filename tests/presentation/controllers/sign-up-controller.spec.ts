@@ -1,20 +1,12 @@
 import { Controller, Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
+import { mockValidationStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): SignUpController.Params => ({
   email: 'any_email@mail.com',
   password: 'any_password',
   passwordConfirmation: 'any_password'
 })
-
-const mockValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
 
 type SutTypes = {
   sut: Controller
