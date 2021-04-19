@@ -1,5 +1,6 @@
 import { Controller, Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
+import { badRequest } from '@/presentation/helpers'
 import { mockValidationStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): SignUpController.Params => ({
@@ -31,9 +32,6 @@ describe('SignUp Controller', () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new Error()
-    })
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 })
