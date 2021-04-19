@@ -28,4 +28,11 @@ describe('DbRegisterUser', () => {
     const user = await sut.register(mockRegisterUserParams())
     expect(user).toBe(false)
   })
+
+  test('Should throw if registerUserRepository throws', async () => {
+    const { sut, registerUserRepositoryStub } = makeSut()
+    jest.spyOn(registerUserRepositoryStub, 'register').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.register(mockRegisterUserParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
