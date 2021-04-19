@@ -78,4 +78,10 @@ describe('DbRegisterUser', () => {
     const promise = sut.register(mockRegisterUserParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const user = await sut.register(mockRegisterUserParams())
+    expect(user).toBe(true)
+  })
 })
