@@ -21,4 +21,11 @@ describe('DbRegisterUser', () => {
     await sut.register(mockRegisterUserParams())
     expect(registerSpy).toBeCalledWith(mockRegisterUserParams())
   })
+
+  test('Should return false if registerUserRepository returns false', async () => {
+    const { sut, registerUserRepositoryStub } = makeSut()
+    jest.spyOn(registerUserRepositoryStub, 'register').mockReturnValueOnce(Promise.resolve(false))
+    const user = await sut.register(mockRegisterUserParams())
+    expect(user).toBe(false)
+  })
 })
