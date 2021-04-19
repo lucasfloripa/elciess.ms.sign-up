@@ -1,20 +1,7 @@
 import { RegisterUserRepository, LoadUserByEmailRepository } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
 import { mockRegisterUserParams } from '@/tests/domain/mocks/mock-register-user-params'
-import { mockRegisterUserRepositoryStub } from '@/tests/data/mocks/mock-register-user-repository'
-
-const mockLoadUserByEmailRepositoryStub = (): LoadUserByEmailRepository => {
-  class LoadUserByEmailRepositoryStub implements LoadUserByEmailRepository {
-    async loadByEmail (email: string): Promise<LoadUserByEmailRepository.Result> {
-      return await Promise.resolve({
-        id: 'any_id',
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      })
-    }
-  }
-  return new LoadUserByEmailRepositoryStub()
-}
+import { mockRegisterUserRepositoryStub, mockLoadUserByEmailRepositoryStub } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbRegisterUser
