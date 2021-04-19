@@ -1,14 +1,6 @@
 import { RegisterUserRepository } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
-
-const mockRegisterUserRepositoryStub = (): RegisterUserRepository => {
-  class RegisterUserRepositoryStub implements RegisterUserRepository {
-    async register (data: RegisterUserRepository.Params): Promise<boolean> {
-      return await Promise.resolve(true)
-    }
-  }
-  return new RegisterUserRepositoryStub()
-}
+import { mockRegisterUserRepositoryStub } from '../mocks/mock-register-user-repository'
 
 type SutTypes = {
   sut: DbRegisterUser
