@@ -12,8 +12,8 @@ export class DbRegisterUser implements RegisterUser {
     const { email, password } = registerUserParams
     const exist = await this.loadUserByEmailRepository.loadByEmail(email)
     if (!exist) {
-      await this.hasher.hash(password)
-      const user = await this.registerUserRepository.register(registerUserParams)
+      const hashedPassword = await this.hasher.hash(password)
+      const user = await this.registerUserRepository.register({ email, password: hashedPassword })
       if (!user) {
         return false
       }

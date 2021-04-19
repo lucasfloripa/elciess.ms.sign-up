@@ -1,16 +1,7 @@
 import { RegisterUserRepository, LoadUserByEmailRepository, Hasher } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
 import { mockRegisterUserParams } from '@/tests/domain/mocks'
-import { mockRegisterUserRepositoryStub, mockLoadUserByEmailRepositoryStub, mockLoadUserByEmailResult } from '@/tests/data/mocks'
-
-const mockHasherStub = (): Hasher => {
-  class HasherStub implements Hasher {
-    async hash (plaintext: string): Promise<string> {
-      return await Promise.resolve('hashed_password')
-    }
-  }
-  return new HasherStub()
-}
+import { mockRegisterUserRepositoryStub, mockLoadUserByEmailRepositoryStub, mockHasherStub,mockLoadUserByEmailResult } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbRegisterUser
@@ -33,7 +24,10 @@ describe('DbRegisterUser', () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
     await sut.register(mockRegisterUserParams())
-    expect(registerSpy).toBeCalledWith(mockRegisterUserParams())
+    expect(registerSpy).toBeCalledWith({
+      email: mockRegisterUserParams().email,
+      password: 'hashed_password'
+    })
   })
 
   test('Should return false if registerUserRepository returns false', async () => {
