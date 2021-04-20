@@ -45,4 +45,14 @@ describe('SignUp Controller', () => {
     await sut.handle(mockRequest())
     expect(registerSpy).toHaveBeenCalledWith(mockRegisterUserParams())
   })
+
+  test('Should return 403 if RegisterUser returns false', async () => {
+    const { sut, registerUserStub } = makeSut()
+    jest.spyOn(registerUserStub, 'register').mockReturnValueOnce(Promise.resolve(false))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual({
+      statusCode: 403,
+      body: new Error()
+    })
+  })
 })
