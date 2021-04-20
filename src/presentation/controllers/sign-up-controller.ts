@@ -14,10 +14,16 @@ export class SignUpController implements Controller {
       return badRequest(error)
     }
     const { email, password } = request
-    await this.registerUser.register({
+    const isValid = await this.registerUser.register({
       email,
       password
     })
+    if (!isValid) {
+      return {
+        statusCode: 403,
+        body: new Error()
+      }
+    }
     return null
   }
 }
