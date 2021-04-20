@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, forbidden } from '@/presentation/helpers'
 import { RegisterUser } from '@/domain/usecases'
 
 export class SignUpController implements Controller {
@@ -19,10 +19,7 @@ export class SignUpController implements Controller {
       password
     })
     if (!isValid) {
-      return {
-        statusCode: 403,
-        body: new Error()
-      }
+      return forbidden(new Error())
     }
     return null
   }
