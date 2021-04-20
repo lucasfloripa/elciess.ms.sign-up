@@ -23,7 +23,10 @@ export class SignUpController implements Controller {
       if (!isValid) {
         return forbidden(new EmailInUseError())
       }
-      return null
+      return {
+        statusCode: 200,
+        body: `${request.email} register!`
+      }
     } catch (error) {
       return serverError(error)
     }
