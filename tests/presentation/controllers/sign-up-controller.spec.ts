@@ -53,4 +53,16 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
+
+  test('Should return 500 if RegisterUser throws', async () => {
+    const { sut, registerUserStub } = makeSut()
+    jest.spyOn(registerUserStub, 'register').mockImplementationOnce(async () => {
+      return await Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      body: new Error()
+    })
+  })
 })
