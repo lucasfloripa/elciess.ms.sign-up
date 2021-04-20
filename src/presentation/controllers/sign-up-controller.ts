@@ -1,5 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, forbidden } from '@/presentation/helpers'
+import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 
 export class SignUpController implements Controller {
@@ -19,7 +20,7 @@ export class SignUpController implements Controller {
       password
     })
     if (!isValid) {
-      return forbidden(new Error())
+      return forbidden(new EmailInUseError())
     }
     return null
   }

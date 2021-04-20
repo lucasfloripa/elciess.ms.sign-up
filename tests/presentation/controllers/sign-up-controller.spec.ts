@@ -1,6 +1,7 @@
 import { Controller, Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
 import { badRequest, forbidden } from '@/presentation/helpers'
+import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 import { mockValidationStub, mockRegisterUserStub } from '@/tests/presentation/mocks'
 import { mockRegisterUserParams } from '@/tests/domain/mocks'
@@ -50,6 +51,6 @@ describe('SignUp Controller', () => {
     const { sut, registerUserStub } = makeSut()
     jest.spyOn(registerUserStub, 'register').mockReturnValueOnce(Promise.resolve(false))
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new Error()))
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
 })
