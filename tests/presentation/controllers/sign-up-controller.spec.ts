@@ -3,6 +3,7 @@ import { SignUpController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
 import { RegisterUser } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/presentation/mocks'
+import { mockRegisterUserParams } from '@/tests/domain/mocks'
 
 const mockRequest = (): SignUpController.Params => ({
   email: 'any_email@mail.com',
@@ -51,9 +52,6 @@ describe('SignUp Controller', () => {
     const { sut, registerUserStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserStub, 'register')
     await sut.handle(mockRequest())
-    expect(registerSpy).toHaveBeenCalledWith({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    expect(registerSpy).toHaveBeenCalledWith(mockRegisterUserParams())
   })
 })
