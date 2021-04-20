@@ -62,4 +62,14 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: `${request.email} register!`
+    })
+  })
 })
