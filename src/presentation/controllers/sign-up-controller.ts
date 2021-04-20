@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 
@@ -23,10 +23,7 @@ export class SignUpController implements Controller {
       if (!isValid) {
         return forbidden(new EmailInUseError())
       }
-      return {
-        statusCode: 200,
-        body: `${request.email} register!`
-      }
+      return ok(`${request.email} register!`)
     } catch (error) {
       return serverError(error)
     }
