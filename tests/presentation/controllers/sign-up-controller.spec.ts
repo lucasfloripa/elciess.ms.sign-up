@@ -2,7 +2,7 @@ import { Controller, Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
 import { RegisterUser } from '@/domain/usecases'
-import { mockValidationStub } from '@/tests/presentation/mocks'
+import { mockValidationStub, mockRegisterUserStub } from '@/tests/presentation/mocks'
 import { mockRegisterUserParams } from '@/tests/domain/mocks'
 
 const mockRequest = (): SignUpController.Params => ({
@@ -10,15 +10,6 @@ const mockRequest = (): SignUpController.Params => ({
   password: 'any_password',
   passwordConfirmation: 'any_password'
 })
-
-const mockRegisterUserStub = (): RegisterUser => {
-  class RegisterUserStub implements RegisterUser {
-    async register (registerUserParams: RegisterUser.Params): Promise<boolean> {
-      return await Promise.resolve(true)
-    }
-  }
-  return new RegisterUserStub()
-}
 
 type SutTypes = {
   sut: Controller
