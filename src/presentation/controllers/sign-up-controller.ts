@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 
@@ -25,10 +25,7 @@ export class SignUpController implements Controller {
       }
       return null
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new Error()
-      }
+      return serverError(error)
     }
   }
 }

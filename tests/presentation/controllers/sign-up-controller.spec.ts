@@ -1,6 +1,6 @@
 import { Controller, Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 import { mockValidationStub, mockRegisterUserStub } from '@/tests/presentation/mocks'
@@ -60,9 +60,6 @@ describe('SignUp Controller', () => {
       return await Promise.reject(new Error())
     })
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual({
-      statusCode: 500,
-      body: new Error()
-    })
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
