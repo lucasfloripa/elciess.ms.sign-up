@@ -10,19 +10,26 @@ export class SignUpController implements Controller {
   ) {}
 
   async handle (request: SignUpController.Params): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const { email, password } = request
+      const isValid = await this.registerUser.register({
+        email,
+        password
+      })
+      if (!isValid) {
+        return forbidden(new EmailInUseError())
+      }
+      return null
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: new Error()
+      }
     }
-    const { email, password } = request
-    const isValid = await this.registerUser.register({
-      email,
-      password
-    })
-    if (!isValid) {
-      return forbidden(new EmailInUseError())
-    }
-    return null
   }
 }
 
