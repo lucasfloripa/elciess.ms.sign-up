@@ -2,19 +2,19 @@ import { RequiredFieldValidation } from '@/utils/validators'
 import { MissingParamError } from '@/presentation/errors'
 
 const makeSut = (): RequiredFieldValidation => {
-  return new RequiredFieldValidation('any_value')
+  return new RequiredFieldValidation('fieldToValidate')
 }
 
 describe('RequiredField Validation', () => {
   test('Should return a MissinParamError if validation fails', () => {
     const sut = makeSut()
-    const error = sut.validate({ invalidField: 'any_value' })
-    expect(error).toEqual(new MissingParamError('any_value'))
+    const error = sut.validate({ invalidFieldToValidate: 'any_value' })
+    expect(error).toEqual(new MissingParamError('fieldToValidate'))
   })
 
-  test('Should not return if validation success', () => {
+  test('Should not return if validation succeeds', () => {
     const sut = makeSut()
-    const error = sut.validate({ any_value: 'any_value' })
+    const error = sut.validate({ fieldToValidate: 'any_value' })
     expect(error).toBeFalsy()
   })
 })
