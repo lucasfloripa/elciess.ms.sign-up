@@ -44,4 +44,10 @@ describe('Email Validation', () => {
     })
     expect(sut.validate).toThrow()
   })
+
+  test('Should not return if succeeds', () => {
+    const { sut } = makeSut()
+    const validate = sut.validate({ email: 'any_email@mail.com' })
+    expect(validate).toBeFalsy()
+  })
 })
