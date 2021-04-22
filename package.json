@@ -18,6 +18,7 @@
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.1",
     "@types/faker": "^5.5.1",
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.40",
@@ -45,6 +46,7 @@
     "@": "dist"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "validator": "^13.6.0"
   }
 }
