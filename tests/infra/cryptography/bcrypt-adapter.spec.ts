@@ -19,4 +19,13 @@ describe('BcryptAdapter', () => {
     await sut.hash('any_value')
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
   })
+
+  test('Should throw if bcrypt throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(bcrypt, 'hash').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+    const promise = sut.hash('any_value')
+    await expect(promise).rejects.toThrow()
+  })
 })
