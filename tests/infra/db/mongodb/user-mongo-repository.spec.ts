@@ -7,7 +7,7 @@ const makeSut = (): UserMongoRepository => {
   return new UserMongoRepository()
 }
 
-let accountCollection: Collection
+let userCollection: Collection
 
 describe('UserMongoRepository', () => {
   beforeAll(async () => {
@@ -19,8 +19,8 @@ describe('UserMongoRepository', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.deleteMany({})
+    userCollection = await MongoHelper.getCollection('users')
+    await userCollection.deleteMany({})
   })
 
   describe('register()', () => {
@@ -35,9 +35,15 @@ describe('UserMongoRepository', () => {
     test('Should return true if the user was found', async () => {
       const sut = makeSut()
       const registerUserParams = mockRegisterUserParams()
-      await accountCollection.insertOne(registerUserParams)
+      await userCollection.insertOne(registerUserParams)
       const exist = await sut.checkByEmail(registerUserParams.email)
       expect(exist).toBe(true)
+    })
+
+    test('Should return false if the user was not found', async () => {
+      const sut = makeSut()
+      const exist = await sut.checkByEmail('any_email@mail.com')
+      expect(exist).toBe(false)
     })
   })
 })
