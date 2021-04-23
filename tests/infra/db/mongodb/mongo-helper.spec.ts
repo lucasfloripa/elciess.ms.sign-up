@@ -16,4 +16,9 @@ describe('Mongo Helper', () => {
     accountCollection = await sut.getCollection('users')
     expect(accountCollection).toBeTruthy()
   })
+
+  test('Should map _id to id', async () => {
+    const map = await sut.map({ _id: 'id' })
+    expect(map).toEqual({ id: 'id' })
+  })
 })
