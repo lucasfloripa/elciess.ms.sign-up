@@ -30,4 +30,14 @@ describe('UserMongoRepository', () => {
       expect(isValid).toBe(true)
     })
   })
+
+  describe('checkByEmail()', () => {
+    test('Should return true if the user was found', async () => {
+      const sut = makeSut()
+      const registerUserParams = mockRegisterUserParams()
+      await accountCollection.insertOne(registerUserParams)
+      const exist = await sut.checkByEmail(registerUserParams.email)
+      expect(exist).toBe(true)
+    })
+  })
 })
