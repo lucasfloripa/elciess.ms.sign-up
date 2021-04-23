@@ -1,6 +1,7 @@
 import { UserMongoRepository } from '@/infra/db/mongodb'
-import { Collection } from 'mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
+import { mockRegisterUserParams } from '@/tests/infra/mocks'
+import { Collection } from 'mongodb'
 
 const makeSut = (): UserMongoRepository => {
   return new UserMongoRepository()
@@ -25,10 +26,7 @@ describe('UserMongoRepository', () => {
   describe('register()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const isValid = await sut.register({
-        email: 'any_email@mail.com',
-        password: 'any_password'
-      })
+      const isValid = await sut.register(mockRegisterUserParams())
       expect(isValid).toBe(true)
     })
   })
