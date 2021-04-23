@@ -17,8 +17,19 @@ describe('Mongo Helper', () => {
     expect(accountCollection).toBeTruthy()
   })
 
-  test('Should map _id to id', async () => {
+  test('Should map an object with _id to id', async () => {
     const map = await sut.map({ _id: 'id' })
     expect(map).toEqual({ id: 'id' })
+  })
+
+  test('Should map all objects with _id to id of an collection', async () => {
+    const map = sut.mapCollection([
+      { _id: 'id' },
+      { _id: 'id' }
+    ])
+    expect(map).toEqual([
+      { id: 'id' },
+      { id: 'id' }
+    ])
   })
 })
