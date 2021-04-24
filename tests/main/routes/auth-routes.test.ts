@@ -2,7 +2,6 @@ import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb'
 
 import { Collection } from 'mongodb'
-// import { hash } from 'bcrypt'
 import request from 'supertest'
 
 let userCollection: Collection
@@ -42,6 +41,25 @@ describe('Auth Routes', () => {
           passwordConfirmation: '1234'
         })
         .expect(400)
+    })
+
+    test('Should return 403 on signup if try register with email already used', async () => {
+      await request(app)
+        .post('/api/signup')
+        .send({
+          email: 'lucasgoncalves@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
+        })
+        .expect(200)
+      await request(app)
+        .post('/api/signup')
+        .send({
+          email: 'lucasgoncalves@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
+        })
+        .expect(403)
     })
   })
 })
