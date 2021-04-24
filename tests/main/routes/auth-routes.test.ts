@@ -32,5 +32,16 @@ describe('Auth Routes', () => {
         })
         .expect(200)
     })
+
+    test('Should return 400 on signup if validation fails', async () => {
+      await request(app)
+        .post('/api/signup')
+        .send({
+          email: 'lucasgoncalves@gmail.com',
+          password: '123',
+          passwordConfirmation: '1234'
+        })
+        .expect(400)
+    })
   })
 })
