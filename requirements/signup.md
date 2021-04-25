@@ -3,7 +3,7 @@
 > ## Success case
 
 1. ✅ Receive a request of type **POST** on rote **/api/signup**
-2. ✅ Validate mandatory data **email**, **password** and **passwordConfirmation**
+2. ✅ Validate required data **email**, **password** and **passwordConfirmation**
 3. ✅ Validate **password** and **passwordConfirmation** are equals
 4. ✅ Validate **email** field is a valid email
 5. ✅ **Validate** if the past email already been used by another user
