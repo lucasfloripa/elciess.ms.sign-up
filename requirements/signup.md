@@ -1,4 +1,4 @@
-# Cadastro
+# SignUp
 
 > ## Success case
 
