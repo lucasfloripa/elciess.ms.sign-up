@@ -3,7 +3,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 # Elciess Auth-Controll API
-##### Tecnologies: Typescript, Node, Express, Jest, MongoDB, Swagger
+##### Tecnologies: Typescript, Node, Express, Jest, MongoDB, Swagger, Travis, Coveralls
 
 <br />
 
