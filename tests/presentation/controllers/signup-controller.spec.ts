@@ -67,6 +67,6 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(ok(`${request.email} register!`))
+    expect(httpResponse).toEqual(ok({ message: `${request.email} register!` }))
   })
 })

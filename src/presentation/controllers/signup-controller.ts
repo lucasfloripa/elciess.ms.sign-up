@@ -23,7 +23,7 @@ export class SignUpController implements Controller {
       if (!isValid) {
         return forbidden(new EmailInUseError())
       }
-      return ok(`${request.email} register!`)
+      return ok({ message: `${request.email} register!` })
     } catch (error) {
       return serverError(error)
     }
