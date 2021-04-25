@@ -3,7 +3,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 # Elciess Auth-Controll API
-##### Tecnologies: Typescript, Node, Express, Jest
+##### Tecnologies: Typescript, Node, Express, Jest, Express, MongoDB
 
 <br />
 
@@ -14,5 +14,5 @@ Its an API to register users and to authenticate them in any other Elciess servi
 TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 
 ### So, what this project do ?
-1. [Sign-Up](./requirements/sign-up.md)
+1. [Sign-Up](./requirements/signup.md)
 2. [Login](./requirements/login.md)
