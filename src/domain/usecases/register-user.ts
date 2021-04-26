@@ -1,5 +1,5 @@
 export interface RegisterUser {
-  register: (registerUserParams: RegisterUser.Params) => Promise<RegisterUser.Result>
+  register: (registerUserParams: RegisterUser.Params) => Promise<boolean>
 }
 
 export namespace RegisterUser {
@@ -7,5 +7,4 @@ export namespace RegisterUser {
     email: string
     password: string
   }
-  export type Result = boolean
 }
