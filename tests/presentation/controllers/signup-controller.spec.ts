@@ -1,4 +1,4 @@
-import { Controller, Validation } from '@/presentation/protocols'
+import { Validation } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers'
 import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
@@ -13,7 +13,7 @@ const mockRequest = (): SignUpController.Params => ({
 })
 
 type SutTypes = {
-  sut: Controller
+  sut: SignUpController
   validationStub: Validation
   registerUserStub: RegisterUser
 }
