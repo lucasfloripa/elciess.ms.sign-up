@@ -20,3 +20,7 @@
 5. ✅ Returns an error **403** if the email provided is already in use
 6. ✅ Returns an error **500** if an error accours when is tried to generate a encrypted passoword
 7. ✅ Returns an error **500** if an error accours when is tried to create a user register
+
+> ## Diagram
+
+![signup diagram](./signup-diagram.png)
