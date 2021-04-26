@@ -1,9 +1,11 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest } from '@/presentation/helpers'
+import { Authenticate } from '@/domain/usecases'
 
 export class AuthenticationController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly authenticate: Authenticate
   ) { }
 
   async handle (request: AuthenticationController.Params): Promise<HttpResponse> {
@@ -11,6 +13,7 @@ export class AuthenticationController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    await this.authenticate.auth(request)
     return null
   }
 }
