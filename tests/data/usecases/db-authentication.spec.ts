@@ -23,4 +23,14 @@ describe('DbAuthentication', () => {
     })
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email')
   })
+
+  test('Should return null if loadUserByEmailRepository returns null', async () => {
+    const { sut, loadUserByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
+    const accessToken = await sut.auth({
+      email: 'any_email',
+      password: 'any_password'
+    })
+    expect(accessToken).toBeNull()
+  })
 })
