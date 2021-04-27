@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, unauthorized } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 
 export class AuthenticationController implements Controller {
@@ -9,15 +9,19 @@ export class AuthenticationController implements Controller {
   ) { }
 
   async handle (request: AuthenticationController.Params): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const accessToken = await this.authenticate.auth(request)
+      if (!accessToken) {
+        return unauthorized()
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    const accessToken = await this.authenticate.auth(request)
-    if (!accessToken) {
-      return unauthorized()
-    }
-    return null
   }
 }
 
