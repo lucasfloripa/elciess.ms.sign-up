@@ -8,7 +8,10 @@ export class DbAuthentication implements Authenticate {
 
   async auth (credentials: Authenticate.Params): Promise<string> {
     const { email } = credentials
-    await this.loadUserByEmailRepository.loadByEmail(email)
+    const user = await this.loadUserByEmailRepository.loadByEmail(email)
+    if (user) {
+      return 'any'
+    }
     return null
   }
 }
