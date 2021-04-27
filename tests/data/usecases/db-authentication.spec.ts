@@ -1,17 +1,7 @@
 import { DbAuthentication } from '@/data/usecases'
 import { LoadUserByEmailRepository, HashComparer, Encrypter } from '@/data/protocols'
-import { mockLoadUserByEmailRepositoryStub, mockHashComparerStub } from '@/tests/data/mocks'
+import { mockLoadUserByEmailRepositoryStub, mockHashComparerStub, mockEncrypterStub } from '@/tests/data/mocks'
 import { Authenticate } from '@/domain/usecases'
-
-const mockEncrypterStub = (): Encrypter => {
-  class EncrypterStub implements Encrypter {
-    async encrypt (id: string): Promise<string> {
-      return 'any_token'
-    }
-  }
-  return new EncrypterStub()
-}
-
 const mockRequest = (): Authenticate.Params => ({
   email: 'any_email',
   password: 'any_password'
