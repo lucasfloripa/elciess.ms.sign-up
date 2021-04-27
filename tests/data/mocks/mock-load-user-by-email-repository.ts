@@ -6,7 +6,7 @@ export const mockLoadUserByEmailRepositoryStub = (): LoadUserByEmailRepository =
       return {
         id: 'any_id',
         email: 'any_email',
-        password: 'any_password'
+        password: 'hashed_password'
       }
     }
   }
