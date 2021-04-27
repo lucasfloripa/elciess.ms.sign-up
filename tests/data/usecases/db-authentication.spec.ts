@@ -59,4 +59,11 @@ describe('DbAuthentication', () => {
     await sut.auth(request)
     expect(loadByEmailSpy).toHaveBeenCalledWith(request.password, 'hashed_password')
   })
+
+  test('Should return null if hashComparer fails', async () => {
+    const { sut, hashComparerStub } = makeSut()
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(null)
+    const accessToken = await sut.auth(mockRequest())
+    expect(accessToken).toBeNull()
+  })
 })
