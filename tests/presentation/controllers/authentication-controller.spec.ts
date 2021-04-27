@@ -1,6 +1,6 @@
 import { AuthenticationController } from '@/presentation/controllers'
 import { Validation } from '@/presentation/protocols'
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
 
@@ -67,5 +67,11 @@ describe('Authentication Controller', () => {
     })
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 with an accessToken on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok({ accessToken: 'access_token' }))
   })
 })
