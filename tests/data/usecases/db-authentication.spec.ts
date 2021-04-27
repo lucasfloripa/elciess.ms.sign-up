@@ -1,16 +1,7 @@
 import { DbAuthentication } from '@/data/usecases'
 import { LoadUserByEmailRepository, HashComparer } from '@/data/protocols'
-import { mockLoadUserByEmailRepositoryStub } from '@/tests/data/mocks'
+import { mockLoadUserByEmailRepositoryStub, mockHashComparerStub } from '@/tests/data/mocks'
 import { Authenticate } from '@/domain/usecases'
-
-const mockHashComparerStub = (): HashComparer => {
-  class HashComparerStub implements HashComparer {
-    async compare (hash: string, hashToCompare: string): Promise<boolean> {
-      return await Promise.resolve(true)
-    }
-  }
-  return new HashComparerStub()
-}
 
 const mockRequest = (): Authenticate.Params => ({
   email: 'any_email',
