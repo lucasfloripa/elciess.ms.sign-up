@@ -1,11 +1,9 @@
+import { User } from '@/domain/models'
+
 export interface LoadUserByEmailRepository {
   loadByEmail: (email: string) => Promise<LoadUserByEmailRepository.Result>
 }
 
 export namespace LoadUserByEmailRepository {
-  export type Result = {
-    id: string
-    email: string
-    password: string
-  }
+  export type Result = User
 }
