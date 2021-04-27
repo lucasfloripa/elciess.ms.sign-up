@@ -1,6 +1,6 @@
 import { AuthenticationController } from '@/presentation/controllers'
 import { Validation } from '@/presentation/protocols'
-import { badRequest, unauthorized } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
 
@@ -58,5 +58,14 @@ describe('Authentication Controller', () => {
     jest.spyOn(authenticateStub, 'auth').mockReturnValueOnce(null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return 500 if Authenticate throws', async () => {
+    const { sut, authenticateStub } = makeSut()
+    jest.spyOn(authenticateStub, 'auth').mockImplementationOnce(async () => {
+      return await Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
