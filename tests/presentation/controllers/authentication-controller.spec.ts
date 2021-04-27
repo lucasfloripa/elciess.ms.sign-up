@@ -3,15 +3,7 @@ import { Validation } from '@/presentation/protocols'
 import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
-
-const mockAuthenticateStub = (): Authenticate => {
-  class AuthenticateStub implements Authenticate {
-    async auth (credentials: Authenticate.Params): Promise<string> {
-      return await Promise.resolve('access_token')
-    }
-  }
-  return new AuthenticateStub()
-}
+import { mockAuthenticateStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): AuthenticationController.Params => ({
   email: 'any_email@mail.com',
