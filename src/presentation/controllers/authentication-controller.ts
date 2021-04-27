@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 
 export class AuthenticationController implements Controller {
@@ -18,7 +18,7 @@ export class AuthenticationController implements Controller {
       if (!accessToken) {
         return unauthorized()
       }
-      return null
+      return ok({ accessToken })
     } catch (error) {
       return serverError(error)
     }
