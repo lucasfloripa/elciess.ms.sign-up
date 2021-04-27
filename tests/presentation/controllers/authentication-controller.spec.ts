@@ -1,6 +1,6 @@
 import { AuthenticationController } from '@/presentation/controllers'
 import { Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, unauthorized } from '@/presentation/helpers'
 import { Authenticate } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
 
@@ -51,5 +51,12 @@ describe('Authentication Controller', () => {
     const authSpy = jest.spyOn(authenticateStub, 'auth')
     await sut.handle(mockRequest())
     expect(authSpy).toHaveBeenCalledWith(mockRequest())
+  })
+
+  test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticateStub } = makeSut()
+    jest.spyOn(authenticateStub, 'auth').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
