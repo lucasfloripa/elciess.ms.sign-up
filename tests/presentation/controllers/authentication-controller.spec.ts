@@ -61,9 +61,10 @@ describe('Authentication Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('Should return 200 with an accessToken on success', async () => {
+  test('Should return 200 with an accessToken and user email on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok({ accessToken: 'access_token' }))
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(ok({ email: request.email, accessToken: 'access_token' }))
   })
 })

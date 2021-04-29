@@ -18,7 +18,7 @@ export class AuthenticationController implements Controller {
       if (!accessToken) {
         return unauthorized()
       }
-      return ok({ accessToken })
+      return ok({ email: request.email, accessToken })
     } catch (error) {
       return serverError(error)
     }
