@@ -1,7 +1,7 @@
-import { RegisterUserRepository, CheckUserByEmailRepository } from '@/data/protocols'
+import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository } from '@/data/protocols'
 import { MongoHelper } from './mongo-helper'
 
-export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository {
+export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository {
   async register (data: RegisterUserRepository.Params): Promise<boolean> {
     const userCollection = await MongoHelper.getCollection('users')
     const result = await userCollection.insertOne(data)
@@ -19,5 +19,11 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
       }
     )
     return user !== null
+  }
+
+  async loadByEmail (email: string): Promise<LoadUserByEmailRepository.Result> {
+    const userCollection = await MongoHelper.getCollection('users')
+    const user = await userCollection.findOne({ email })
+    return user && MongoHelper.map(user)
   }
 }
