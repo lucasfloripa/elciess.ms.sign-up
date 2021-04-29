@@ -1,7 +1,7 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb'
-
 import { Collection } from 'mongodb'
+import { hash } from 'bcrypt'
 import request from 'supertest'
 
 let userCollection: Collection
@@ -60,6 +60,23 @@ describe('Auth Routes', () => {
           passwordConfirmation: '123'
         })
         .expect(403)
+    })
+  })
+
+  describe('POST /auth', () => {
+    test('Should return 200 on auth', async () => {
+      const password = await hash('123', 12)
+      await userCollection.insertOne({
+        email: 'lucasg@gmail.com',
+        password
+      })
+      await request(app)
+        .post('/api/auth')
+        .send({
+          email: 'lucasg@gmail.com',
+          password: '123'
+        })
+        .expect(200)
     })
   })
 })
