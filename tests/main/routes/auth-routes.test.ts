@@ -79,6 +79,15 @@ describe('Auth Routes', () => {
         .expect(200)
     })
 
+    test('Should return 400 on auth if validation fails', async () => {
+      await request(app)
+        .post('/api/auth')
+        .send({
+          email: 'lucasgoncalves@gmail.com'
+        })
+        .expect(400)
+    })
+
     test('Should return 401 on auth fail', async () => {
       await request(app)
         .post('/api/auth')
