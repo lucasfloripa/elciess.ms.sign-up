@@ -1,6 +1,6 @@
 import { UserMongoRepository } from '@/infra/db/mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
-import { mockRegisterUserParams } from '@/tests/infra/mocks'
+import { mockRegisterUserParams } from '@/tests/domain/mocks'
 import { Collection } from 'mongodb'
 
 const makeSut = (): UserMongoRepository => {
