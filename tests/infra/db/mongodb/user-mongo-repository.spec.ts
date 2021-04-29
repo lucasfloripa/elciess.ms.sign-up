@@ -58,5 +58,11 @@ describe('UserMongoRepository', () => {
       expect(user.email).toBe(registerUserParams.email)
       expect(user.password).toBe(registerUserParams.password)
     })
+
+    test('Should return null if the user was not found', async () => {
+      const sut = makeSut()
+      const exist = await sut.loadByEmail('any_email@mail.com')
+      expect(exist).toBe(null)
+    })
   })
 })
