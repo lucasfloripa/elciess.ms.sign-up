@@ -46,4 +46,17 @@ describe('UserMongoRepository', () => {
       expect(exist).toBe(false)
     })
   })
+
+  describe('loadByEmail()', () => {
+    test('Should return an user on success', async () => {
+      const sut = makeSut()
+      const registerUserParams = mockRegisterUserParams()
+      await userCollection.insertOne(registerUserParams)
+      const user = await sut.loadByEmail(registerUserParams.email)
+      expect(user).toBeTruthy()
+      expect(user.id).toBeTruthy()
+      expect(user.email).toBe(registerUserParams.email)
+      expect(user.password).toBe(registerUserParams.password)
+    })
+  })
 })
