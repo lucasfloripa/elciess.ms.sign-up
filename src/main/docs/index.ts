@@ -1,6 +1,6 @@
-import { signUpPath } from './paths'
-import { signUpSchema, signUpParamsSchema, errorSchema } from './schemas'
-import { badRequest, serverError, unauthorized } from './components'
+import { signUpPath, authPath } from './paths'
+import { signUpSchema, signUpParamsSchema, authSchema, authParamsSchema, errorSchema } from './schemas'
+import { badRequest, serverError, forbidden, unauthorized } from './components'
 
 export default {
   openapi: '3.0.0',
@@ -12,20 +12,25 @@ export default {
   servers: [{
     url: '/api'
   }],
-  tags: [{
-    name: 'SignUp'
-  }],
+  tags: [
+    { name: 'SignUp' },
+    { name: 'Auth' }
+  ],
   paths: {
-    '/signup': signUpPath
+    '/signup': signUpPath,
+    '/auth': authPath
   },
   schemas: {
     signup: signUpSchema,
     signupParams: signUpParamsSchema,
+    auth: authSchema,
+    authParams: authParamsSchema,
     error: errorSchema
   },
   components: {
     badRequest,
     serverError,
+    forbidden,
     unauthorized
   }
 }

@@ -1,11 +1,10 @@
-export const authParamsSchema = {
+export const authSchema = {
   type: 'object',
-  required: ['email', 'password'],
   properties: {
     email: {
       type: 'string'
     },
-    password: {
+    accessToken: {
       type: 'string'
     }
   }
