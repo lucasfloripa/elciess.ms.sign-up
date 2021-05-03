@@ -1,12 +1,10 @@
 {
-  "name": "name",
+  "name": "elciess.ms.auth-controll",
   "version": "1.0.0",
-  "description": "description",
+  "description": "API to register users and to authenticate them in any other Elciess services.",
   "author": "Lucas Gonçalves",
-  "repository": "repository",
-  "homepage": "https://github.com/lucasfloripa",
+  "repository": "https://github.com/lucasfloripa/elciess.ms.sign-up",
   "scripts": {
-    "dev": "nodemon src/main/server.ts",
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
@@ -48,9 +46,6 @@
     "ts-jest": "^26.5.5",
     "typescript": "^4.2.4"
   },
-  "_moduleAliases": {
-    "@": "dist"
-  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
@@ -59,5 +54,8 @@
     "mongodb": "^3.6.6",
     "swagger-ui-express": "^4.1.6",
     "validator": "^13.6.0"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
