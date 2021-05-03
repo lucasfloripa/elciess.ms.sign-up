@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo-container
+    image: mongo:3
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports: 
+      - "27017:27017"
+  api:
+    container_name: api-container
+    build: .
+    image: elciess-ms-auth-controll
+    restart: always
+    command: npm start
+    volumes: 
+      - ./dist:/usr/src/elciess-ms-auth-controll/dist
+    ports: 
+      - "5050:5050"
+    links: 
+      - mongo

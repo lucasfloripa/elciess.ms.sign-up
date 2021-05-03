@@ -8,6 +8,8 @@
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down",
     "build:watch": "rimraf dist && tsc -p tsconfig-build.json -w",
     "test": "jest --passWithNoTests --runInBand --no-cache",
     "test:unit": "npm test -- --watchAll -c jest-unit-config.js",
@@ -57,5 +59,8 @@
   },
   "_moduleAliases": {
     "@": "dist"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
