@@ -1,15 +1,6 @@
 import { DbLoadUsers } from '@/data/usecases'
 import { LoadUsersRepository } from '@/data/protocols'
-import { mockListUserModel } from '@/tests/domain/mocks'
-
-const mockLoadUsersRepositoryStub = (): LoadUsersRepository => {
-  class LoadUsersRepositoryStub implements LoadUsersRepository {
-    async loadAll (): Promise<LoadUsersRepository.Result> {
-      return mockListUserModel()
-    }
-  }
-  return new LoadUsersRepositoryStub()
-}
+import { mockLoadUsersRepositoryStub } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbLoadUsers
