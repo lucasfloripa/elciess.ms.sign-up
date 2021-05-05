@@ -1,4 +1,4 @@
-export const forbidden = {
+export const forbiddenResponse = {
   description: 'Email in use',
   content: {
     'application/json': {

@@ -22,13 +22,13 @@ export const signUpPath = {
         }
       },
       400: {
-        $ref: '#/components/badRequest'
+        $ref: '#/components/badRequestResponse'
       },
       403: {
-        $ref: '#/components/forbidden'
+        $ref: '#/components/forbiddenResponse'
       },
       500: {
-        $ref: '#/components/serverError'
+        $ref: '#/components/serverErrorResponse'
       }
     }
   }

@@ -1,4 +1,4 @@
-export const unauthorized = {
+export const unauthorizedResponse = {
   description: 'Unauthorized',
   content: {
     'application/json': {

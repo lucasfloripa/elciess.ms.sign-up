@@ -1,4 +1,4 @@
-export const badRequest = {
+export const badRequestResponse = {
   description: 'Invalid Requisition',
   content: {
     'application/json': {

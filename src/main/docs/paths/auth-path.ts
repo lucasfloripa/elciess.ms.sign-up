@@ -22,13 +22,13 @@ export const authPath = {
         }
       },
       400: {
-        $ref: '#/components/badRequest'
+        $ref: '#/components/badRequestResponse'
       },
       401: {
-        $ref: '#/components/unauthorized'
+        $ref: '#/components/unauthorizedResponse'
       },
       500: {
-        $ref: '#/components/serverError'
+        $ref: '#/components/serverErrorResponse'
       }
     }
   }

@@ -1,4 +1,4 @@
-export const serverError = {
+export const serverErrorResponse = {
   description: 'Server Problem',
   content: {
     'application/json': {

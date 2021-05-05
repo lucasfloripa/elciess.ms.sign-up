@@ -1,6 +1,6 @@
 import { signUpPath, authPath } from './paths'
 import { signUpSchema, signUpParamsSchema, authSchema, authParamsSchema, errorSchema } from './schemas'
-import { badRequest, serverError, forbidden, unauthorized } from './components'
+import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse } from './components'
 
 export default {
   openapi: '3.0.0',
@@ -28,9 +28,9 @@ export default {
     error: errorSchema
   },
   components: {
-    badRequest,
-    serverError,
-    forbidden,
-    unauthorized
+    badRequestResponse,
+    serverErrorResponse,
+    forbiddenResponse,
+    unauthorizedResponse
   }
 }
