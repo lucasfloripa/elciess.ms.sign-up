@@ -1,6 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { LoadUsers } from '@/domain/usecases'
-import { noContent, serverError } from '@/presentation/helpers'
+import { noContent, serverError, ok } from '@/presentation/helpers'
 
 export class LoadUsersController implements Controller {
   constructor (
@@ -13,7 +13,7 @@ export class LoadUsersController implements Controller {
       if (!users) {
         return noContent()
       }
-      return null
+      return ok(users)
     } catch (error) {
       return serverError(error)
     }
