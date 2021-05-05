@@ -1,6 +1,6 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
 import { LoadUsers } from '@/domain/usecases'
-import { noContent } from '@/presentation/helpers'
+import { noContent, serverError } from '@/presentation/helpers'
 
 export class LoadUsersController implements Controller {
   constructor (
@@ -8,10 +8,14 @@ export class LoadUsersController implements Controller {
   ) { }
 
   async handle (): Promise<HttpResponse> {
-    const users = await this.loadUsers.load()
-    if (!users) {
-      return noContent()
+    try {
+      const users = await this.loadUsers.load()
+      if (!users) {
+        return noContent()
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    return null
   }
 }
