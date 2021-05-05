@@ -79,4 +79,21 @@ describe('UserMongoRepository', () => {
       expect(account.accessToken).toBe(accessToken)
     })
   })
+
+  describe('loadAll()', () => {
+    test('Should return an list of users on success', async () => {
+      const sut = makeSut()
+      const registerUserParams = mockRegisterUserParams()
+      await userCollection.insertOne(registerUserParams)
+      await userCollection.insertOne({
+        email: 'other_email@mail.com',
+        password: 'other_password'
+      })
+      const users = await sut.loadAll()
+      expect(users[0]).toBeTruthy()
+      expect(users[1]).toBeTruthy()
+      expect(users[0].id).toBeTruthy()
+      expect(users[1].id).toBeTruthy()
+    })
+  })
 })
