@@ -1,17 +1,8 @@
 import { LoadUsersController } from '@/presentation/controllers'
 import { noContent, serverError, ok } from '@/presentation/helpers'
 import { LoadUsers } from '@/domain/usecases'
-import { User } from '@/domain/models'
 import { mockListUserModel } from '@/tests/domain/mocks'
-
-const mockLoadUsersStub = (): LoadUsers => {
-  class LoadUsersStub implements LoadUsers {
-    async load (): Promise<User[]> {
-      return mockListUserModel()
-    }
-  }
-  return new LoadUsersStub()
-}
+import { mockLoadUsersStub } from '@/tests/presentation/mocks'
 
 type SutTypes = {
   sut: LoadUsersController
