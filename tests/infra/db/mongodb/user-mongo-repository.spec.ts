@@ -95,5 +95,11 @@ describe('UserMongoRepository', () => {
       expect(users[0].id).toBeTruthy()
       expect(users[1].id).toBeTruthy()
     })
+
+    test('Should load empty list', async () => {
+      const sut = makeSut()
+      const users = await sut.loadAll()
+      expect(users.length).toBe(0)
+    })
   })
 })
