@@ -1,4 +1,5 @@
 import { LoadUsersController } from '@/presentation/controllers'
+import { noContent } from '@/presentation/helpers'
 import { LoadUsers } from '@/domain/usecases'
 import { User } from '@/domain/models'
 import { mockUserModel } from '@/tests/domain/mocks'
@@ -32,5 +33,12 @@ describe('LoadUsersController', () => {
     const loadUsersSpy = jest.spyOn(loadUsersStub, 'load')
     await sut.handle()
     expect(loadUsersSpy).toHaveBeenCalled()
+  })
+
+  test('Should return 204 if loadUsers returns null', async () => {
+    const { sut, loadUsersStub } = makeSut()
+    jest.spyOn(loadUsersStub, 'load').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(noContent())
   })
 })
