@@ -1,16 +1,13 @@
 import { LoadUsersController } from '@/presentation/controllers'
-import { noContent, serverError } from '@/presentation/helpers'
+import { noContent, serverError, ok } from '@/presentation/helpers'
 import { LoadUsers } from '@/domain/usecases'
 import { User } from '@/domain/models'
-import { mockUserModel } from '@/tests/domain/mocks'
+import { mockListUserModel } from '@/tests/domain/mocks'
 
 const mockLoadUsersStub = (): LoadUsers => {
   class LoadUsersStub implements LoadUsers {
     async load (): Promise<User[]> {
-      return [
-        mockUserModel(),
-        mockUserModel()
-      ]
+      return mockListUserModel()
     }
   }
   return new LoadUsersStub()
@@ -49,5 +46,11 @@ describe('LoadUsersController', () => {
     })
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(ok(mockListUserModel()))
   })
 })
