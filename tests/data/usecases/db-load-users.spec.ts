@@ -20,4 +20,11 @@ describe('DbLoadUsers', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
+  test('Should throw if loadUserByEmailRepository throws', async () => {
+    const { sut, loadUsersRepositoryStub } = makeSut()
+    jest.spyOn(loadUsersRepositoryStub, 'loadAll').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
+  })
 })
