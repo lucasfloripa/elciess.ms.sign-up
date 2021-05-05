@@ -1,7 +1,7 @@
-import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository } from '@/data/protocols'
+import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository } from '@/data/protocols'
 import { MongoHelper } from './mongo-helper'
 
-export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository {
+export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository {
   async register (data: RegisterUserRepository.Params): Promise<boolean> {
     const userCollection = await MongoHelper.getCollection('users')
     const result = await userCollection.insertOne(data)
@@ -36,5 +36,11 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
           accessToken: token
         }
       })
+  }
+
+  async loadAll (): Promise<LoadUsersRepository.Result> {
+    const userCollection = await MongoHelper.getCollection('users')
+    const users = await userCollection.find().toArray()
+    return users && MongoHelper.mapCollection(users)
   }
 }
