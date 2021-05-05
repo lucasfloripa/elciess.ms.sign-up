@@ -1,5 +1,5 @@
 import { LoadUsersController } from '@/presentation/controllers'
-import { noContent } from '@/presentation/helpers'
+import { noContent, serverError } from '@/presentation/helpers'
 import { LoadUsers } from '@/domain/usecases'
 import { User } from '@/domain/models'
 import { mockUserModel } from '@/tests/domain/mocks'
@@ -40,5 +40,14 @@ describe('LoadUsersController', () => {
     jest.spyOn(loadUsersStub, 'load').mockReturnValueOnce(null)
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 500 if loadUsers throws', async () => {
+    const { sut, loadUsersStub } = makeSut()
+    jest.spyOn(loadUsersStub, 'load').mockImplementationOnce(async () => {
+      return Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle()
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
