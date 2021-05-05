@@ -11,3 +11,10 @@ export const mockUserModel = (): User => ({
   email: 'any_email',
   password: 'any_password'
 })
+
+export const mockListUserModel = (): User[] => {
+  return [
+    mockUserModel(),
+    mockUserModel()
+  ]
+}
