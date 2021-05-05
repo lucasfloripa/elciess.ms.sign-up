@@ -7,7 +7,6 @@ export class DbLoadUsers implements LoadUsers {
   ) { }
 
   async load (): Promise<LoadUsers.Result> {
-    await this.loadUsersRepository.loadAll()
-    return null
+    return this.loadUsersRepository.loadAll()
   }
 }
