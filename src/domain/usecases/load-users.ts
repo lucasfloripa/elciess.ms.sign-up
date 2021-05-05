@@ -1,5 +1,9 @@
 import { User } from '@/domain/models'
 
 export interface LoadUsers {
-  load: () => Promise<User[]>
+  load: () => Promise<LoadUsers.Result>
+}
+
+export namespace LoadUsers {
+  export type Result = User[]
 }
