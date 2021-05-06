@@ -16,3 +16,4 @@ TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 ### Functional requirements
 1. [Sign-Up](./requirements/signup.md)
 2. [Authentication](./requirements/authentication.md)
+2. [Load Users](./requirements/load-users.md)
