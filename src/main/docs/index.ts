@@ -1,6 +1,6 @@
-import { signUpPath, authPath } from './paths'
-import { signUpSchema, signUpParamsSchema, authSchema, authParamsSchema, errorSchema } from './schemas'
-import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse } from './components'
+import { signUpPath, authPath, usersPath } from './paths'
+import { signUpSchema, signUpParamsSchema, authSchema, authParamsSchema, errorSchema, usersSchema, noContentSchema } from './schemas'
+import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse, noContentResponse } from './components'
 
 export default {
   openapi: '3.0.0',
@@ -14,20 +14,25 @@ export default {
   }],
   tags: [
     { name: 'SignUp' },
-    { name: 'Auth' }
+    { name: 'Auth' },
+    { name: 'Get Users' }
   ],
   paths: {
     '/signup': signUpPath,
-    '/auth': authPath
+    '/auth': authPath,
+    '/users': usersPath
   },
   schemas: {
     signup: signUpSchema,
     signupParams: signUpParamsSchema,
     auth: authSchema,
     authParams: authParamsSchema,
-    error: errorSchema
+    users: usersSchema,
+    error: errorSchema,
+    noContent: noContentSchema
   },
   components: {
+    noContentResponse,
     badRequestResponse,
     serverErrorResponse,
     forbiddenResponse,
