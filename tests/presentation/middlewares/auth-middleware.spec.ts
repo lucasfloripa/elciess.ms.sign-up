@@ -48,6 +48,6 @@ describe('Auth Middleware', () => {
   test('Should return 200 if loadUserByToken returns an user', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
-    expect(httpResponse).toEqual(ok(mockUserModel()))
+    expect(httpResponse).toEqual(ok({ userId: mockUserModel().id }))
   })
 })
