@@ -1,5 +1,5 @@
 import { HttpResponse, Middleware } from '@/presentation/protocols'
-import { forbidden, ok, unauthorized } from '@/presentation/helpers'
+import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { LoadUserByToken } from '@/domain/usecases'
 import { AccessDeniedError } from '@/presentation/errors'
 
@@ -10,15 +10,19 @@ export class AuthMiddleware implements Middleware {
   ) { }
 
   async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
-    const { accessToken } = request
-    if (accessToken) {
-      const user = await this.loadUserByToken.loadByToken(accessToken)
-      if (user) {
-        return ok({ userId: user.id })
+    try {
+      const { accessToken } = request
+      if (accessToken) {
+        const user = await this.loadUserByToken.loadByToken(accessToken)
+        if (user) {
+          return ok({ userId: user.id })
+        }
+        return forbidden(new AccessDeniedError())
       }
-      return forbidden(new AccessDeniedError())
+      return unauthorized()
+    } catch (error) {
+      return serverError(error)
     }
-    return unauthorized()
   }
 }
 
