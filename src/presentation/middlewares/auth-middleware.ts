@@ -1,5 +1,5 @@
 import { HttpResponse, Middleware } from '@/presentation/protocols'
-import { forbidden, unauthorized } from '@/presentation/helpers'
+import { forbidden, ok, unauthorized } from '@/presentation/helpers'
 import { LoadUserByToken } from '@/domain/usecases'
 import { AccessDeniedError } from '@/presentation/errors'
 
@@ -14,7 +14,7 @@ export class AuthMiddleware implements Middleware {
     if (accessToken) {
       const user = await this.loadUserByToken.loadByToken(accessToken)
       if (user) {
-        return null
+        return ok(user)
       }
       return forbidden(new AccessDeniedError())
     }
