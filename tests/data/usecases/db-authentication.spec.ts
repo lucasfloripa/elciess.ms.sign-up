@@ -44,7 +44,7 @@ describe('DbAuthentication', () => {
 
   test('Should return null if loadUserByEmailRepository returns null', async () => {
     const { sut, loadUserByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
+    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null))
     const accessToken = await sut.auth(mockRequest())
     expect(accessToken).toBeNull()
   })
@@ -66,7 +66,7 @@ describe('DbAuthentication', () => {
 
   test('Should return null if hashComparer fails', async () => {
     const { sut, hashComparerStub } = makeSut()
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(null)
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(null))
     const accessToken = await sut.auth(mockRequest())
     expect(accessToken).toBeNull()
   })

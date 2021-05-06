@@ -25,7 +25,7 @@ describe('LoadUsersController', () => {
 
   test('Should return 204 if loadUsers returns null', async () => {
     const { sut, loadUsersStub } = makeSut()
-    jest.spyOn(loadUsersStub, 'load').mockReturnValueOnce(null)
+    jest.spyOn(loadUsersStub, 'load').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle()
     expect(httpResponse).toEqual(noContent())
   })
