@@ -5,7 +5,5 @@ export interface LoadUserByToken {
 }
 
 export namespace LoadUserByToken {
-  export type Result = {
-    user: User
-  }
+  export type Result = User
 }
