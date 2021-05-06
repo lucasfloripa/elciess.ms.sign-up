@@ -3,7 +3,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 # Elciess Auth-Controll API
-##### Tecnologies: Typescript, Node, Express, Jest, MongoDB, [Swagger](https://elciess-ms-signup.herokuapp.com/api-docs/ "https://elciess-ms-signup.herokuapp.com/api-docs/"), Travis, Coveralls, [Heroku](https://elciess-ms-signup.herokuapp.com/api "https://elciess-ms-signup.herokuapp.com/api")
+##### Tecnologies: Typescript, Node, Express, Jest, MongoDB, [Swagger](https://elciess-ms-signup.herokuapp.com/api-docs/ "https://elciess-ms-signup.herokuapp.com/api-docs/"), Travis, Coveralls, Docker, [Heroku](https://elciess-ms-signup.herokuapp.com/api "https://elciess-ms-signup.herokuapp.com/api")
 
 <br />
 
@@ -16,3 +16,4 @@ TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 ### Functional requirements
 1. [Sign-Up](./requirements/signup.md)
 2. [Authentication](./requirements/authentication.md)
+2. [Load Users](./requirements/load-users.md)
