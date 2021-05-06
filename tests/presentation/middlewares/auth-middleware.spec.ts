@@ -1,5 +1,5 @@
 import { AuthMiddleware } from '@/presentation/middlewares'
-import { forbidden, unauthorized } from '@/presentation/helpers'
+import { forbidden, ok, unauthorized } from '@/presentation/helpers'
 import { LoadUserByToken } from '@/domain/usecases'
 import { mockUserModel } from '@/tests/domain/mocks'
 import { AccessDeniedError } from '@/presentation/errors'
@@ -43,5 +43,11 @@ describe('Auth Middleware', () => {
     jest.spyOn(loadUserByTokenStub, 'loadByToken').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should return 200 if loadUserByToken returns an user', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
+    expect(httpResponse).toEqual(ok(mockUserModel()))
   })
 })
