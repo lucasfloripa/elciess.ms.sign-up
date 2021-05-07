@@ -6,7 +6,7 @@ import { AccessDeniedError } from '@/presentation/errors'
 
 const mockLoadUserByToken = (): LoadUserByToken => {
   class LoadUserByTokenStub implements LoadUserByToken {
-    async loadByToken (token: string): Promise<LoadUserByToken.Result> {
+    async loadByToken (accessToken: string): Promise<LoadUserByToken.Result> {
       return mockUserModel()
     }
   }
@@ -18,9 +18,9 @@ type SutTypes = {
   loadUserByTokenStub: LoadUserByToken
 }
 
-const makeSut = (): SutTypes => {
+const makeSut = (role?: string): SutTypes => {
   const loadUserByTokenStub = mockLoadUserByToken()
-  const sut = new AuthMiddleware(loadUserByTokenStub)
+  const sut = new AuthMiddleware(loadUserByTokenStub, role)
   return { sut, loadUserByTokenStub }
 }
 
@@ -31,11 +31,12 @@ describe('Auth Middleware', () => {
     expect(httpResponse).toEqual(unauthorized())
   })
 
-  test('Should call loadUserByToken with correct value', async () => {
-    const { sut, loadUserByTokenStub } = makeSut()
+  test('Should call loadUserByToken with correct values', async () => {
+    const role = 'any_role'
+    const { sut, loadUserByTokenStub } = makeSut(role)
     const loadUserByTokenSpy = jest.spyOn(loadUserByTokenStub, 'loadByToken')
     await sut.handle({ accessToken: 'any_access_token' })
-    expect(loadUserByTokenSpy).toHaveBeenCalledWith('any_access_token')
+    expect(loadUserByTokenSpy).toHaveBeenCalledWith('any_access_token', role)
   })
 
   test('Should return 403 if loadUserByToken returns null', async () => {
