@@ -49,6 +49,13 @@ describe('DbLoadUserByToken', () => {
     expect(user).toBe(null)
   })
 
+  test('Should throw if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.loadByToken('any_token', 'any_role')
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call loadUserByTokenRepository with correct value', async () => {
     const { sut, loadUserByTokenRepositoryStub } = makeSut()
     const loadByTokenSpy = jest.spyOn(loadUserByTokenRepositoryStub, 'loadByToken')
