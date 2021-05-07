@@ -13,7 +13,7 @@ export class AuthMiddleware implements Middleware {
     try {
       const { accessToken } = request
       if (accessToken) {
-        const user = await this.loadUserByToken.loadByToken(accessToken)
+        const user = await this.loadUserByToken.loadByToken(accessToken, this.role)
         if (user) {
           return ok({ userId: user.id })
         }
