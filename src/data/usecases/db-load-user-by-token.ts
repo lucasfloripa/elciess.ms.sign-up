@@ -11,7 +11,10 @@ export class DbLoadUserByToken implements LoadUserByToken {
   async loadByToken (accessToken: string, role?: string): Promise<User> {
     const token = await this.decrypter.decrypt(accessToken)
     if (token) {
-      await this.loadUserByTokenRepository.loadByToken(token)
+      const user = await this.loadUserByTokenRepository.loadByToken(token)
+      if (user) {
+        return null
+      }
     }
     return null
   }
