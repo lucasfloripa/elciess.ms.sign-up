@@ -5,6 +5,9 @@ import jwt from 'jsonwebtoken'
 jest.mock('jsonwebtoken', () => ({
   async sign (): Promise<string> {
     return 'access_token'
+  },
+  async verify (): Promise<string> {
+    return 'token'
   }
 }))
 
@@ -20,20 +23,29 @@ describe('JwtAdapter', () => {
       await sut.encrypt('user_id')
       expect(encryptSpy).toHaveBeenCalledWith({ id: 'user_id' }, env.jwtSecret)
     })
-  })
 
-  test('Should throw if sign throws', async () => {
-    const sut = makeSut()
-    jest.spyOn(jwt, 'sign').mockImplementationOnce(async () => {
-      throw new Error()
+    test('Should throw if sign throws', async () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'sign').mockImplementationOnce(async () => {
+        throw new Error()
+      })
+      const promise = sut.encrypt('any_value')
+      await expect(promise).rejects.toThrow()
     })
-    const promise = sut.encrypt('any_value')
-    await expect(promise).rejects.toThrow()
+
+    test('Should return a access token on encrypt success', async () => {
+      const sut = makeSut()
+      const accessToken = await sut.encrypt('user_id')
+      expect(accessToken).toBe('access_token')
+    })
   })
 
-  test('Should return a access token on encrypt success', async () => {
-    const sut = makeSut()
-    const accessToken = await sut.encrypt('user_id')
-    expect(accessToken).toBe('access_token')
+  describe('decrypt()', () => {
+    test('Should call decrypt with correct values', async () => {
+      const sut = makeSut()
+      const decryptSpy = jest.spyOn(jwt, 'verify')
+      await sut.decrypt('token')
+      expect(decryptSpy).toHaveBeenCalledWith('token', env.jwtSecret)
+    })
   })
 })
