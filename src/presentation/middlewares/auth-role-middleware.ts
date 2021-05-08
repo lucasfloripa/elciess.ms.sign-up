@@ -3,13 +3,13 @@ import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers
 import { LoadUserByToken } from '@/domain/usecases'
 import { AccessDeniedError } from '@/presentation/errors'
 
-export class AuthMiddleware implements Middleware {
+export class AuthRoleMiddleware implements Middleware {
   constructor (
     private readonly loadUserByToken: LoadUserByToken,
     private readonly role?: string
   ) { }
 
-  async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
+  async handle (request: AuthRoleMiddleware.Request): Promise<HttpResponse> {
     try {
       const { accessToken } = request
       if (accessToken) {
@@ -26,7 +26,7 @@ export class AuthMiddleware implements Middleware {
   }
 }
 
-export namespace AuthMiddleware {
+export namespace AuthRoleMiddleware {
   export type Request = {
     accessToken: string
   }

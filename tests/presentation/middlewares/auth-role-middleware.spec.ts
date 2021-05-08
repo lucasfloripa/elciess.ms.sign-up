@@ -1,4 +1,4 @@
-import { AuthMiddleware } from '@/presentation/middlewares'
+import { AuthRoleMiddleware } from '@/presentation/middlewares'
 import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { LoadUserByToken } from '@/domain/usecases'
 import { mockUserModel } from '@/tests/domain/mocks'
@@ -14,13 +14,13 @@ const mockLoadUserByToken = (): LoadUserByToken => {
 }
 
 type SutTypes = {
-  sut: AuthMiddleware
+  sut: AuthRoleMiddleware
   loadUserByTokenStub: LoadUserByToken
 }
 
 const makeSut = (role?: string): SutTypes => {
   const loadUserByTokenStub = mockLoadUserByToken()
-  const sut = new AuthMiddleware(loadUserByTokenStub, role)
+  const sut = new AuthRoleMiddleware(loadUserByTokenStub, role)
   return { sut, loadUserByTokenStub }
 }
 

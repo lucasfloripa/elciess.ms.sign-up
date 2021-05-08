@@ -1,7 +1,9 @@
 import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository } from '@/data/protocols'
+import { User } from '@/domain/models'
+import { LoadUserByToken } from '@/domain/usecases'
 import { MongoHelper } from './mongo-helper'
 
-export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository {
+export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByToken {
   async register (data: RegisterUserRepository.Params): Promise<boolean> {
     const userCollection = await MongoHelper.getCollection('users')
     const result = await userCollection.insertOne(data)
@@ -42,5 +44,9 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
     const userCollection = await MongoHelper.getCollection('users')
     const users = await userCollection.find().toArray()
     return users && MongoHelper.mapCollection(users)
+  }
+
+  async loadByToken (accessToken: string, role?: string): Promise<User> {
+    return null
   }
 }
