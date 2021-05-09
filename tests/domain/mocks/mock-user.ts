@@ -10,6 +10,7 @@ export const mockUserModel = (): User => ({
   id: 'any_id',
   email: 'any_email',
   password: 'any_password',
+  accessToken: 'any_token',
   role: 'any_role'
 })
 
