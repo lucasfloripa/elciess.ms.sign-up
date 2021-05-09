@@ -1,60 +1,61 @@
 import { AuthRoleMiddleware } from '@/presentation/middlewares'
 import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
-import { LoadUserByToken } from '@/domain/usecases'
-import { mockUserModel } from '@/tests/domain/mocks'
 import { AccessDeniedError } from '@/presentation/errors'
+import { RoleAuthentication } from '@/domain/usecases'
+import { User } from '@/domain/models'
+import { mockUserModel } from '@/tests/domain/mocks'
 
-const mockLoadUserByToken = (): LoadUserByToken => {
-  class LoadUserByTokenStub implements LoadUserByToken {
-    async loadByToken (accessToken: string): Promise<LoadUserByToken.Result> {
+const makeRoleAuthenticationStub = (): RoleAuthentication => {
+  class RoleAuthenticationStub implements RoleAuthentication {
+    async auth (token: string, role: string): Promise<User> {
       return mockUserModel()
     }
   }
-  return new LoadUserByTokenStub()
+  return new RoleAuthenticationStub()
 }
 
 type SutTypes = {
   sut: AuthRoleMiddleware
-  loadUserByTokenStub: LoadUserByToken
+  roleAuthenticationStub: RoleAuthentication
 }
 
-const makeSut = (role?: string): SutTypes => {
-  const loadUserByTokenStub = mockLoadUserByToken()
-  const sut = new AuthRoleMiddleware(loadUserByTokenStub, role)
-  return { sut, loadUserByTokenStub }
+const makeSut = (): SutTypes => {
+  const role = 'any_role'
+  const roleAuthenticationStub = makeRoleAuthenticationStub()
+  const sut = new AuthRoleMiddleware(roleAuthenticationStub, role)
+  return { sut, roleAuthenticationStub }
 }
 
-describe('Auth Middleware', () => {
+describe('AuthRoleMiddleware ', () => {
   test('Should return 401 if no x-access-token is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ accessToken: '' })
     expect(httpResponse).toEqual(unauthorized())
   })
 
-  test('Should call loadUserByToken with correct values', async () => {
-    const role = 'any_role'
-    const { sut, loadUserByTokenStub } = makeSut(role)
-    const loadUserByTokenSpy = jest.spyOn(loadUserByTokenStub, 'loadByToken')
+  test('Should call RoleAuthentication with correct values', async () => {
+    const { sut, roleAuthenticationStub } = makeSut()
+    const authSpy = jest.spyOn(roleAuthenticationStub, 'auth')
     await sut.handle({ accessToken: 'any_access_token' })
-    expect(loadUserByTokenSpy).toHaveBeenCalledWith('any_access_token', role)
+    expect(authSpy).toHaveBeenCalledWith('any_access_token', 'any_role')
   })
 
-  test('Should return 403 if loadUserByToken returns null', async () => {
-    const { sut, loadUserByTokenStub } = makeSut()
-    jest.spyOn(loadUserByTokenStub, 'loadByToken').mockReturnValueOnce(Promise.resolve(null))
+  test('Should return 403 if RoleAuthentication returns null', async () => {
+    const { sut, roleAuthenticationStub } = makeSut()
+    jest.spyOn(roleAuthenticationStub, 'auth').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
-  test('Should return 200 if loadUserByToken returns an user', async () => {
+  test('Should return 200 if RoleAuthentication returns an user', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
     expect(httpResponse).toEqual(ok({ userId: mockUserModel().id }))
   })
 
-  test('Should return 500 if loadUserByToken throws', async () => {
-    const { sut, loadUserByTokenStub } = makeSut()
-    jest.spyOn(loadUserByTokenStub, 'loadByToken').mockImplementationOnce(async () => {
+  test('Should return 500 if RoleAuthentication throws', async () => {
+    const { sut, roleAuthenticationStub } = makeSut()
+    jest.spyOn(roleAuthenticationStub, 'auth').mockImplementationOnce(async () => {
       return await Promise.reject(new Error())
     })
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
