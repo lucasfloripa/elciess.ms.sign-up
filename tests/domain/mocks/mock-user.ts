@@ -9,7 +9,8 @@ export const mockRegisterUserParams = (): RegisterUser.Params => ({
 export const mockUserModel = (): User => ({
   id: 'any_id',
   email: 'any_email',
-  password: 'any_password'
+  password: 'any_password',
+  role: 'any_role'
 })
 
 export const mockListUserModel = (): User[] => {
