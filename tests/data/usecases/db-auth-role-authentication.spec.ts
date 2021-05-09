@@ -87,4 +87,10 @@ describe('DbAuthRoleAuthentication Data Usecase', () => {
     const promise = sut.auth('any_token', 'any_role')
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an user on success', async () => {
+    const { sut } = makeSut()
+    const user = await sut.auth('any_token', 'any_role')
+    expect(user).toEqual(mockUserModel())
+  })
 })
