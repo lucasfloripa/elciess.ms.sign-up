@@ -66,6 +66,21 @@ describe('UserMongoRepository', () => {
     })
   })
 
+  describe('loadByToken()', () => {
+    test('Should return an user on success', async () => {
+      const sut = makeSut()
+      const res = await userCollection.insertOne(mockRegisterUserParams())
+      const fakeAccount = res.ops[0]
+      expect(fakeAccount.accessToken).toBeFalsy()
+      const accessToken = 'any_access_token'
+      await sut.updateAccessToken(fakeAccount._id, accessToken)
+      const user = await sut.loadByToken('any_access_token')
+      expect(user).toBeTruthy()
+      expect(user.id).toBeTruthy()
+      expect(user.accessToken).toBe('any_access_token')
+    })
+  })
+
   describe('updateAccessToken()', () => {
     test('Should update user accessToken on success', async () => {
       const sut = makeSut()
