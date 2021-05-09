@@ -1,19 +1,19 @@
 import { User } from '@/domain/models'
-import { LoadUserByToken } from '@/domain/usecases'
+import { RoleAuthentication } from '@/domain/usecases'
 import { Decrypter, LoadUserByTokenRepository } from '@/data/protocols'
 
-export class DbLoadUserByToken implements LoadUserByToken {
+export class DbAuthRoleAuthentication implements RoleAuthentication {
   constructor (
     private readonly decrypter: Decrypter,
     private readonly loadUserByTokenRepository: LoadUserByTokenRepository
   ) { }
 
-  async loadByToken (accessToken: string, role?: string): Promise<User> {
+  async auth (accessToken: string, role: string): Promise<User> {
     const token = await this.decrypter.decrypt(accessToken)
     if (token) {
-      const user = await this.loadUserByTokenRepository.loadByToken(token, role)
-      if (user) {
-        return null
+      const user = await this.loadUserByTokenRepository.loadByToken(token)
+      if (role === user?.role) {
+        return user
       }
     }
     return null
