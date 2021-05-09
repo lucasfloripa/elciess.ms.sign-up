@@ -29,6 +29,12 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
     return user && MongoHelper.map(user)
   }
 
+  async loadByToken (accessToken: string): Promise<User> {
+    const userCollection = await MongoHelper.getCollection('users')
+    const user = await userCollection.findOne({ accessToken })
+    return user && MongoHelper.map(user)
+  }
+
   async updateAccessToken (id: string, token: string): Promise<void> {
     const userCollection = await MongoHelper.getCollection('users')
     await userCollection.findOneAndUpdate(
@@ -44,9 +50,5 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
     const userCollection = await MongoHelper.getCollection('users')
     const users = await userCollection.find().toArray()
     return users && MongoHelper.mapCollection(users)
-  }
-
-  async loadByToken (accessToken: string, role?: string): Promise<User> {
-    return null
   }
 }
