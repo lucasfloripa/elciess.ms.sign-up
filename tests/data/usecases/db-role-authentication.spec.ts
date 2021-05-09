@@ -1,4 +1,4 @@
-import { DbAuthRoleAuthentication } from '@/data/usecases'
+import { DbRoleAuthentication } from '@/data/usecases'
 import { Decrypter, LoadUserByTokenRepository } from '@/data/protocols'
 import { User } from '@/domain/models'
 import { mockUserModel } from '@/tests/domain/mocks'
@@ -22,7 +22,7 @@ const makeDecrypterStub = (): Decrypter => {
 }
 
 type SutTypes = {
-  sut: DbAuthRoleAuthentication
+  sut: DbRoleAuthentication
   decrypterStub: Decrypter
   loadUserByTokenRepositoryStub: LoadUserByTokenRepository
 }
@@ -30,11 +30,11 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const decrypterStub = makeDecrypterStub()
   const loadUserByTokenRepositoryStub = makeLoadUserByTokenRepositoryStub()
-  const sut = new DbAuthRoleAuthentication(decrypterStub, loadUserByTokenRepositoryStub)
+  const sut = new DbRoleAuthentication(decrypterStub, loadUserByTokenRepositoryStub)
   return { sut, decrypterStub, loadUserByTokenRepositoryStub }
 }
 
-describe('DbAuthRoleAuthentication Data Usecase', () => {
+describe('DbRoleAuthentication Data Usecase', () => {
   test('Should call Decrypter with correct value', async () => {
     const { sut, decrypterStub } = makeSut()
     const decryptSpy = jest.spyOn(decrypterStub, 'decrypt')

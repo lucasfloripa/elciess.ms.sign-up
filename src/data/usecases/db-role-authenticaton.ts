@@ -2,7 +2,7 @@ import { User } from '@/domain/models'
 import { RoleAuthentication } from '@/domain/usecases'
 import { Decrypter, LoadUserByTokenRepository } from '@/data/protocols'
 
-export class DbAuthRoleAuthentication implements RoleAuthentication {
+export class DbRoleAuthentication implements RoleAuthentication {
   constructor (
     private readonly decrypter: Decrypter,
     private readonly loadUserByTokenRepository: LoadUserByTokenRepository
