@@ -1,7 +1,7 @@
 import { User } from '@/domain/models'
 
 export interface LoadUserByTokenRepository {
-  loadByToken: (token: string, role?: string) => Promise<LoadUserByTokenRepository.Result>
+  loadByToken: (token: string) => Promise<LoadUserByTokenRepository.Result>
 }
 
 export namespace LoadUserByTokenRepository {
