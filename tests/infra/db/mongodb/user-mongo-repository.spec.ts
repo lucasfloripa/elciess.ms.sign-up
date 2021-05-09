@@ -79,6 +79,12 @@ describe('UserMongoRepository', () => {
       expect(user.id).toBeTruthy()
       expect(user.accessToken).toBe('any_access_token')
     })
+
+    test('Should return null if the user was not found', async () => {
+      const sut = makeSut()
+      const exist = await sut.loadByToken('any_token')
+      expect(exist).toBe(null)
+    })
   })
 
   describe('updateAccessToken()', () => {
