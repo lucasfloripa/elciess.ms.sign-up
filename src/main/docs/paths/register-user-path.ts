@@ -1,11 +1,11 @@
-export const signUpPath = {
+export const registerUserPath = {
   post: {
-    tags: ['SignUp'],
+    tags: ['RegisterUser'],
     requestBody: {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/signupParams'
+            $ref: '#/schemas/registerUserParams'
           }
         }
       }
@@ -16,7 +16,7 @@ export const signUpPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/signup'
+              $ref: '#/schemas/registerUser'
             }
           }
         }

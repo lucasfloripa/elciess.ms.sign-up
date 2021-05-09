@@ -3,13 +3,13 @@ import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 
-export class SignUpController implements Controller {
+export class RegisterUserController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly registerUser: RegisterUser
   ) {}
 
-  async handle (request: SignUpController.Params): Promise<HttpResponse> {
+  async handle (request: RegisterUserController.Params): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
       if (error) {
@@ -30,7 +30,7 @@ export class SignUpController implements Controller {
   }
 }
 
-export namespace SignUpController {
+export namespace RegisterUserController {
   export type Params = {
     email: string
     password: string

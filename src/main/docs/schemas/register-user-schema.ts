@@ -1,4 +1,4 @@
-export const signUpSchema = {
+export const registerUserSchema = {
   type: 'object',
   properties: {
     message: {

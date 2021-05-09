@@ -1,8 +1,8 @@
-# SignUp
+# Register User
 
 > ## Success case
 
-1. ✅ Receive a request of type **POST** on rote **/api/signup**
+1. ✅ Receive a request of type **POST** on rote **/api/register**
 2. ✅ Validate required data **email**, **password** and **passwordConfirmation**
 3. ✅ Validate **password** and **passwordConfirmation** are equals
 4. ✅ Validate **email** field is a valid email
@@ -23,4 +23,4 @@
 
 > ## Diagram
 
-![signup diagram](./signup-diagram.png)
+![register user diagram](./register-user-diagram.png)

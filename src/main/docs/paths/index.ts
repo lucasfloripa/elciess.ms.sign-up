@@ -1,3 +1,3 @@
-export * from './signup-path'
+export * from './register-user-path'
 export * from './auth-path'
 export * from './users-path'

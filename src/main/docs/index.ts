@@ -1,5 +1,5 @@
-import { signUpPath, authPath, usersPath } from './paths'
-import { signUpSchema, signUpParamsSchema, authSchema, authParamsSchema, errorSchema, usersSchema, noContentSchema } from './schemas'
+import { registerUserPath, authPath, usersPath } from './paths'
+import { registerUserSchema, registerUserParamsSchema, authSchema, authParamsSchema, errorSchema, usersSchema, noContentSchema } from './schemas'
 import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse, noContentResponse } from './components'
 
 export default {
@@ -13,18 +13,18 @@ export default {
     url: '/api'
   }],
   tags: [
-    { name: 'SignUp' },
+    { name: 'RegisterUser' },
     { name: 'Auth' },
     { name: 'Get Users' }
   ],
   paths: {
-    '/signup': signUpPath,
+    '/register': registerUserPath,
     '/auth': authPath,
     '/users': usersPath
   },
   schemas: {
-    signup: signUpSchema,
-    signupParams: signUpParamsSchema,
+    registerUser: registerUserSchema,
+    registerUserParams: registerUserParamsSchema,
     auth: authSchema,
     authParams: authParamsSchema,
     users: usersSchema,

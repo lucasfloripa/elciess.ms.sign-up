@@ -1,19 +1,19 @@
 import { Validation } from '@/presentation/protocols'
-import { SignUpController } from '@/presentation/controllers'
+import { RegisterUserController } from '@/presentation/controllers'
 import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { EmailInUseError } from '@/presentation/errors'
 import { RegisterUser } from '@/domain/usecases'
 import { mockValidationStub, mockRegisterUserStub } from '@/tests/presentation/mocks'
 import { mockRegisterUserParams } from '@/tests/domain/mocks'
 
-const mockRequest = (): SignUpController.Params => ({
+const mockRequest = (): RegisterUserController.Params => ({
   email: 'any_email@mail.com',
   password: 'any_password',
   passwordConfirmation: 'any_password'
 })
 
 type SutTypes = {
-  sut: SignUpController
+  sut: RegisterUserController
   validationStub: Validation
   registerUserStub: RegisterUser
 }
@@ -21,11 +21,11 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validationStub = mockValidationStub()
   const registerUserStub = mockRegisterUserStub()
-  const sut = new SignUpController(validationStub, registerUserStub)
+  const sut = new RegisterUserController(validationStub, registerUserStub)
   return { sut, validationStub, registerUserStub }
 }
 
-describe('SignUp Controller', () => {
+describe('RegisterUser Controller', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

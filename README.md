@@ -14,6 +14,6 @@ Its an API to register users and to authenticate them in any other Elciess servi
 TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 
 ### Functional requirements
-1. [Sign-Up](./requirements/signup.md)
-2. [Authentication](./requirements/authentication.md)
-2. [Load Users](./requirements/load-users.md)
+1. [Authentication](./requirements/authentication.md)
+2. [Register User](./requirements/register-user.md)
+3. [Load Users](./requirements/load-users.md)

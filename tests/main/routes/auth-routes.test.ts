@@ -20,10 +20,10 @@ describe('Auth Routes', () => {
     await userCollection.deleteMany({})
   })
 
-  describe('POST /signup', () => {
-    test('Should return 200 on signup', async () => {
+  describe('POST /register', () => {
+    test('Should return 200 on register user', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/api/register')
         .send({
           email: 'lucasgoncalves@gmail.com',
           password: '123',
@@ -32,9 +32,9 @@ describe('Auth Routes', () => {
         .expect(200)
     })
 
-    test('Should return 400 on signup if validation fails', async () => {
+    test('Should return 400 on register user if validation fails', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/api/register')
         .send({
           email: 'lucasgoncalves@gmail.com',
           password: '123',
@@ -43,9 +43,9 @@ describe('Auth Routes', () => {
         .expect(400)
     })
 
-    test('Should return 403 on signup if try register with email already used', async () => {
+    test('Should return 403 on register user if try register with email already used', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/api/register')
         .send({
           email: 'lucasgoncalves@gmail.com',
           password: '123',
@@ -53,7 +53,7 @@ describe('Auth Routes', () => {
         })
         .expect(200)
       await request(app)
-        .post('/api/signup')
+        .post('/api/register')
         .send({
           email: 'lucasgoncalves@gmail.com',
           password: '123',

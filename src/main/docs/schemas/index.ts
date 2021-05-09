@@ -1,5 +1,5 @@
-export * from './signup-schema'
-export * from './signup-params-schema'
+export * from './register-user-schema'
+export * from './register-user-params-schema'
 export * from './auth-schema'
 export * from './auth-params-schema'
 export * from './users-schema'

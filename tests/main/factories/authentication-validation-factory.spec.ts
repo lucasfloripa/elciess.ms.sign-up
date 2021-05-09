@@ -5,7 +5,7 @@ import { makeAuthenticationValidation } from '@/main/factories/validations'
 
 jest.mock('@/utils/validators/validation-composite')
 
-describe('SignUp Validation Factory', () => {
+describe('Authentication Validation Factory', () => {
   test('Should call Validation Composite with all Validators', () => {
     makeAuthenticationValidation()
     const validations: Validation[] = []

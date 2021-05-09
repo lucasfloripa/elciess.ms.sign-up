@@ -1,4 +1,4 @@
-export const signUpParamsSchema = {
+export const registerUserParamsSchema = {
   type: 'object',
   required: ['email', 'password', 'passwordConfirmation'],
   properties: {
