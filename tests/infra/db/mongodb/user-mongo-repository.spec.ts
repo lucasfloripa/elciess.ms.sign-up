@@ -66,24 +66,20 @@ describe('UserMongoRepository', () => {
     })
   })
 
-  describe('loadByToken()', () => {
+  describe('loadById()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const res = await userCollection.insertOne(mockRegisterUserParams())
-      const fakeAccount = res.ops[0]
-      expect(fakeAccount.accessToken).toBeFalsy()
-      const accessToken = 'any_access_token'
-      await sut.updateAccessToken(fakeAccount._id, accessToken)
-      const user = await sut.loadByToken('any_access_token')
-      expect(user).toBeTruthy()
-      expect(user.id).toBeTruthy()
-      expect(user.accessToken).toBe('any_access_token')
+      const registerUserParams = mockRegisterUserParams()
+      await userCollection.insertOne(registerUserParams)
+      const fakeUser = await userCollection.findOne({ email: registerUserParams.email })
+      const exist = await sut.loadById(fakeUser._id)
+      expect(exist).toBeTruthy()
     })
 
-    test('Should return null if the user was not found', async () => {
+    test('Should return null if user was not found', async () => {
       const sut = makeSut()
-      const exist = await sut.loadByToken('any_token')
-      expect(exist).toBe(null)
+      const exist = await sut.loadById('609c2f591bbd02004286b2da')
+      expect(exist).toBeFalsy()
     })
   })
 
