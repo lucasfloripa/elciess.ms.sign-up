@@ -9,9 +9,11 @@ export class DbRoleAuthentication implements RoleAuthentication {
   ) { }
 
   async auth (accessToken: string, role: string): Promise<User> {
+    let decrypt: any
     let userId: string
     try {
-      userId = await this.decrypter.decrypt(accessToken)
+      decrypt = await this.decrypter.decrypt(accessToken)
+      userId = decrypt.id
     } catch (error) {
       return null
     }
