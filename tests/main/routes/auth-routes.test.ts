@@ -1,31 +1,31 @@
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb'
-// import env from '@/main/config/env'
+import env from '@/main/config/env'
 
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
-// import { sign } from 'jsonwebtoken'
+import { sign } from 'jsonwebtoken'
 import request from 'supertest'
 
 let userCollection: Collection
 
-// const mockAccessToken = async (): Promise<string> => {
-//   const res = await userCollection.insertOne({
-//     email: 'lucasg.admin@gmail.com',
-//     password: '123',
-//     role: 'admin'
-//   })
-//   const id = res.ops[0]._id
-//   const accessToken = sign({ id }, env.jwtSecret)
-//   await userCollection.updateOne({
-//     _id: id
-//   }, {
-//     $set: {
-//       accessToken
-//     }
-//   })
-//   return accessToken
-// }
+const mockAccessToken = async (): Promise<string> => {
+  const res = await userCollection.insertOne({
+    email: 'lucasg.admin@gmail.com',
+    password: '123',
+    role: 'admin'
+  })
+  const id = res.ops[0]._id
+  const accessToken = sign({ id }, env.jwtSecret)
+  await userCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+  return accessToken
+}
 
 describe('Auth Routes', () => {
   beforeAll(async () => {
@@ -53,18 +53,18 @@ describe('Auth Routes', () => {
         .expect(401)
     })
 
-    // test('Should return 200 on register user with valid accessToken', async () => {
-    //   const accessToken = await mockAccessToken()
-    //   await request(app)
-    //     .post('/api/register')
-    //     .set('x-access-token', accessToken)
-    //     .send({
-    //       email: 'juceliog@gmail.com',
-    //       password: '123',
-    //       passwordConfirmation: '123'
-    //     })
-    //     .expect(200)
-    // })
+    test('Should return 200 on register user with valid accessToken', async () => {
+      const accessToken = await mockAccessToken()
+      await request(app)
+        .post('/api/register')
+        .set('x-access-token', accessToken)
+        .send({
+          email: 'juceliog@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
+        })
+        .expect(200)
+    })
   })
 
   describe('POST /auth', () => {
