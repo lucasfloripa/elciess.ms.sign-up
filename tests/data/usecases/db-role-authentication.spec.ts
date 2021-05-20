@@ -5,8 +5,8 @@ import { mockLoadUserByIdRepository } from '@/tests/data/mocks'
 
 const makeDecrypterStub = (): Decrypter => {
   class DecrypterStub implements Decrypter {
-    async decrypt (text: string): Promise<string> {
-      return 'valid_decrypt'
+    async decrypt (text: string): Promise<any> {
+      return { id: 'any_id' }
     }
   }
   return new DecrypterStub()
@@ -43,15 +43,15 @@ describe('DbRoleAuthentication Data Usecase', () => {
   test('Should throw if Decrypter throws', async () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(async () => await Promise.reject(new Error()))
-    const user = await sut.auth('any_token', 'any_role')
-    expect(user).toBe(null)
+    const promise = sut.auth('any_token', 'any_role')
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call loadUserByIdRepository with correct value', async () => {
     const { sut, loadUserByIdRepositoryStub } = makeSut()
     const loadByTokenSpy = jest.spyOn(loadUserByIdRepositoryStub, 'loadById')
     await sut.auth('any_token', 'any_role')
-    expect(loadByTokenSpy).toHaveBeenCalledWith('valid_decrypt')
+    expect(loadByTokenSpy).toHaveBeenCalledWith('any_id')
   })
 
   test('Should return null if loadUserByIdRepository returns null', async () => {

@@ -9,16 +9,9 @@ export class DbRoleAuthentication implements RoleAuthentication {
   ) { }
 
   async auth (accessToken: string, role: string): Promise<User> {
-    let decrypt: any
-    let userId: string
-    try {
-      decrypt = await this.decrypter.decrypt(accessToken)
-      userId = decrypt.id
-    } catch (error) {
-      return null
-    }
-    if (userId) {
-      const user = await this.loadUserByIdRepository.loadById(userId)
+    const decrypt = await this.decrypter.decrypt(accessToken) as any
+    if (decrypt) {
+      const user = await this.loadUserByIdRepository.loadById(decrypt.id)
       if (role === user?.role) {
         return user
       }
