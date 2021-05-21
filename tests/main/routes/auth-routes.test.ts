@@ -65,7 +65,7 @@ describe('Auth Routes', () => {
         .expect(403)
     })
 
-    test('Should return 200 on register user with valid accessToken', async () => {
+    test('Should return 200 on register user with valid admin accessToken', async () => {
       const accessToken = await mockAccessToken()
       await request(app)
         .post('/api/register')
@@ -127,6 +127,14 @@ describe('Auth Routes', () => {
         .get('/api/users')
         .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
         .expect(403)
+    })
+
+    test('Should return 200 on get users with valid admin accessToken', async () => {
+      const accessToken = await mockAccessToken()
+      await request(app)
+        .get('/api/users')
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })
