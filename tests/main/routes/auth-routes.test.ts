@@ -42,7 +42,7 @@ describe('Auth Routes', () => {
   })
 
   describe('POST /register', () => {
-    test('Should return 401 on register user without accessToken', async () => {
+    test('Should return 401 on register user if no accessToken is provided', async () => {
       await request(app)
         .post('/api/register')
         .send({
@@ -51,6 +51,18 @@ describe('Auth Routes', () => {
           passwordConfirmation: '123'
         })
         .expect(401)
+    })
+
+    test('Should return 403 on register user without an admin accessToken', async () => {
+      await request(app)
+        .post('/api/register')
+        .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
+        .send({
+          email: 'lucasg.floripa@gmail.com',
+          password: '123',
+          passwordConfirmation: '123'
+        })
+        .expect(403)
     })
 
     test('Should return 200 on register user with valid accessToken', async () => {
