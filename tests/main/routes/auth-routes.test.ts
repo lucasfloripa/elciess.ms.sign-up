@@ -121,5 +121,12 @@ describe('Auth Routes', () => {
         .get('/api/users')
         .expect(401)
     })
+
+    test('Should return 403 on get users without an admin accessToken', async () => {
+      await request(app)
+        .get('/api/users')
+        .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
+        .expect(403)
+    })
   })
 })
