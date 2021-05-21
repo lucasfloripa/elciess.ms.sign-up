@@ -114,4 +114,12 @@ describe('Auth Routes', () => {
         .expect(401)
     })
   })
+
+  describe('GET /users', () => {
+    test('Should return 401 on get users if no accessToken is provided', async () => {
+      await request(app)
+        .get('/api/users')
+        .expect(401)
+    })
+  })
 })
