@@ -1,16 +1,7 @@
 import { DbAuthentication } from '@/data/usecases'
 import { LoadUserByEmailRepository, HashComparer, Encrypter, UpdateUserAccessTokenRepository } from '@/data/protocols'
-import { mockLoadUserByEmailRepositoryStub, mockHashComparerStub, mockEncrypterStub } from '@/tests/data/mocks'
 import { Authenticate } from '@/domain/usecases'
-
-const mockUpdateUserAccessTokenRepositoryStub = (): UpdateUserAccessTokenRepository => {
-  class UpdateUserAccessTokenRepositoryStub implements UpdateUserAccessTokenRepository {
-    async updateAccessToken (id: string, token: string): Promise<void> {
-      return null
-    }
-  }
-  return new UpdateUserAccessTokenRepositoryStub()
-}
+import { mockLoadUserByEmailRepositoryStub, mockHashComparerStub, mockEncrypterStub, mockUpdateUserAccessTokenRepositoryStub } from '@/tests/data/mocks'
 
 const mockRequest = (): Authenticate.Params => ({
   email: 'any_email',
