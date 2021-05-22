@@ -2,17 +2,7 @@ import { AuthRoleMiddleware } from '@/presentation/middlewares'
 import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { AccessDeniedError } from '@/presentation/errors'
 import { RoleAuthentication } from '@/domain/usecases'
-import { User } from '@/domain/models'
-import { mockUserModel } from '@/tests/domain/mocks'
-
-const makeRoleAuthenticationStub = (): RoleAuthentication => {
-  class RoleAuthenticationStub implements RoleAuthentication {
-    async auth (token: string, role: string): Promise<User> {
-      return mockUserModel()
-    }
-  }
-  return new RoleAuthenticationStub()
-}
+import { mockRoleAuthenticationStub } from '@/tests/presentation/mocks'
 
 type SutTypes = {
   sut: AuthRoleMiddleware
@@ -21,12 +11,12 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const role = 'any_role'
-  const roleAuthenticationStub = makeRoleAuthenticationStub()
+  const roleAuthenticationStub = mockRoleAuthenticationStub()
   const sut = new AuthRoleMiddleware(roleAuthenticationStub, role)
   return { sut, roleAuthenticationStub }
 }
 
-describe('AuthRoleMiddleware ', () => {
+describe('AuthRole Middleware', () => {
   test('Should return 401 if no x-access-token is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ accessToken: '' })
@@ -50,7 +40,7 @@ describe('AuthRoleMiddleware ', () => {
   test('Should return 200 if RoleAuthentication returns an user', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ accessToken: 'any_access_token' })
-    expect(httpResponse).toEqual(ok({ userId: mockUserModel().id }))
+    expect(httpResponse).toEqual(ok({ userId: 'any_id' }))
   })
 
   test('Should return 500 if RoleAuthentication throws', async () => {

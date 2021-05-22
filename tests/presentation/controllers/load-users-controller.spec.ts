@@ -15,7 +15,7 @@ const makeSut = (): SutTypes => {
   return { sut, loadUsersStub }
 }
 
-describe('LoadUsersController', () => {
+describe('LoadUsers Controller', () => {
   test('Should call loadUsers correctly', async () => {
     const { sut, loadUsersStub } = makeSut()
     const loadUsersSpy = jest.spyOn(loadUsersStub, 'load')
