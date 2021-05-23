@@ -1,8 +1,9 @@
 import { RegisterUser } from '@/domain/usecases'
-import { CheckUserByEmailRepository, RegisterUserRepository, Hasher } from '@/data/protocols'
+import { CheckUserByEmailRepository, RegisterUserRepository, Hasher, IdGenerator } from '@/data/protocols'
 
 export class DbRegisterUser implements RegisterUser {
   constructor (
+    private readonly idGenerator: IdGenerator,
     private readonly registerUserRepository: RegisterUserRepository,
     private readonly checkUserByEmailRepository: CheckUserByEmailRepository,
     private readonly hasher: Hasher
@@ -13,6 +14,7 @@ export class DbRegisterUser implements RegisterUser {
     const exist = await this.checkUserByEmailRepository.checkByEmail(email)
     let isValid = false
     if (!exist) {
+      await this.idGenerator.generate()
       const hashedPassword = await this.hasher.hash(password)
       isValid = await this.registerUserRepository.register({ email, password: hashedPassword })
     }
