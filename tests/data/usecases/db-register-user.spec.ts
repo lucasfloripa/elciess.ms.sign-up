@@ -55,6 +55,7 @@ describe('DbRegisterUser Data Usecase', () => {
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
     await sut.register(mockRequest())
     expect(registerSpy).toBeCalledWith({
+      id: 'any_id',
       email: mockRequest().email,
       password: 'hashed_password'
     })
