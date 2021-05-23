@@ -1,4 +1,5 @@
 import { MongoHelper as sut } from '@/infra/db/mongodb'
+import { mockRegisterUserRepositoryParams } from '@/tests/data/mocks'
 
 describe('Mongo Helper', () => {
   beforeAll(async () => {
@@ -17,19 +18,19 @@ describe('Mongo Helper', () => {
     expect(accountCollection).toBeTruthy()
   })
 
-  test('Should map an object with _id to id', async () => {
-    const map = await sut.map({ _id: 'id' })
-    expect(map).toEqual({ id: 'id' })
+  test('Should map an object without _id', async () => {
+    const map = await sut.map({ _id: 'any_id', ...mockRegisterUserRepositoryParams() })
+    expect(map).toEqual(mockRegisterUserRepositoryParams())
   })
 
-  test('Should map all objects with _id to id of an collection', async () => {
-    const map = sut.mapCollection([
-      { _id: 'id' },
-      { _id: 'id' }
+  test('Should map all objects without _id', async () => {
+    const mapAll = sut.mapCollection([
+      { _id: 'any_id', ...mockRegisterUserRepositoryParams() },
+      { _id: 'any_id', ...mockRegisterUserRepositoryParams() }
     ])
-    expect(map).toEqual([
-      { id: 'id' },
-      { id: 'id' }
+    expect(mapAll).toEqual([
+      mockRegisterUserRepositoryParams(),
+      mockRegisterUserRepositoryParams()
     ])
   })
 })
