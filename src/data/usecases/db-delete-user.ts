@@ -7,7 +7,7 @@ export class DbDeleteUser implements DeleteUser {
   ) { }
 
   async delete (id: string): Promise<boolean> {
-    await this.deleteUserByIdRepository.deleteById(id)
-    return null
+    const exist = await this.deleteUserByIdRepository.deleteById(id)
+    return exist
   }
 }
