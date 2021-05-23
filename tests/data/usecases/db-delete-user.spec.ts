@@ -4,7 +4,7 @@ import { DeleteUserByIdRepository } from '@/data/protocols'
 const mockDeleteUserByIdRepository = (): DeleteUserByIdRepository => {
   class DeleteUserByIdRepositoryStub implements DeleteUserByIdRepository {
     async deleteById (userId: string): Promise<boolean> {
-      return null
+      return true
     }
   }
   return new DeleteUserByIdRepositoryStub()
@@ -41,5 +41,11 @@ describe('DbDeleteUser Data Usecase', () => {
     jest.spyOn(deleteUserByIdRepository, 'deleteById').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.delete('any_id')
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return true if deleteUserByIdRepository success', async () => {
+    const { sut } = makeSut()
+    const isValid = await sut.delete('any_id')
+    expect(isValid).toBeTruthy()
   })
 })
