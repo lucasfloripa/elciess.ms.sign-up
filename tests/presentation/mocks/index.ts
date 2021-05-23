@@ -1,5 +1,6 @@
 export * from './mock-validation'
 export * from './mock-register-user'
+export * from './mock-delete-user'
 export * from './mock-authenticate'
 export * from './mock-load-users'
 export * from './mock-role-authentication'

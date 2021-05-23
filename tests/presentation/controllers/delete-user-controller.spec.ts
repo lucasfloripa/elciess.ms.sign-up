@@ -3,19 +3,11 @@ import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 import { Validation } from '@/presentation/protocols'
 import { DeleteUser } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
+import { mockDeleteUser } from '@/tests/presentation/mocks'
 
 const makeRequest = (): DeleteUserController.Params => ({
   id: 'any_id'
 })
-
-const mockDeleteUser = (): DeleteUser => {
-  class DeleteUserStub implements DeleteUser {
-    async delete (id: string): Promise<boolean> {
-      return true
-    }
-  }
-  return new DeleteUserStub()
-}
 
 type SutTypes = {
   sut: DeleteUserController
