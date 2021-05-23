@@ -8,3 +8,9 @@ export const mockRegisterUserRepositoryStub = (): RegisterUserRepository => {
   }
   return new RegisterUserRepositoryStub()
 }
+
+export const mockRegisterUserRepositoryParams = (): RegisterUserRepository.Params => ({
+  id: 'generated_id',
+  email: 'any_email@mail.com',
+  password: 'hashed_password'
+})

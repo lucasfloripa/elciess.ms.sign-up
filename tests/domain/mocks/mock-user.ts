@@ -1,16 +1,9 @@
-import { RegisterUserRepository } from '@/data/protocols'
 import { RegisterUser } from '@/domain/usecases'
 import { User } from '@/domain/models'
 
 export const mockRegisterUserParams = (): RegisterUser.Params => ({
   email: 'any_email@mail.com',
   password: 'any_password'
-})
-
-export const mockRegisterUserRepositoryParams = (): RegisterUserRepository.Params => ({
-  id: 'generated_id',
-  email: 'any_email@mail.com',
-  password: 'hashed_password'
 })
 
 export const mockUserModel = (): User => ({
