@@ -1,8 +1,12 @@
 import { DeleteUserController } from '@/presentation/controllers'
-import { badRequest, notFound, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 import { Validation } from '@/presentation/protocols'
 import { DeleteUser } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
+
+const makeRequest = (): DeleteUserController.Params => ({
+  id: 'any_id'
+})
 
 const mockDeleteUser = (): DeleteUser => {
   class DeleteUserStub implements DeleteUser {
@@ -30,28 +34,32 @@ describe('DeleteUser Controller', () => {
   test('Should call validation with correct value', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
-    await sut.handle({ id: 'any_id' })
-    expect(validateSpy).toHaveBeenCalledWith({ id: 'any_id' })
+    const request = makeRequest()
+    await sut.handle(request)
+    expect(validateSpy).toHaveBeenCalledWith(request)
   })
 
   test('Should return 400 if validation returns an error', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
-    const httpResponse = await sut.handle({ id: 'any_id' })
+    const request = makeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
   test('Should call deleteUser with correct id', async () => {
     const { sut, deleteUserStub } = makeSut()
     const deleteSpy = jest.spyOn(deleteUserStub, 'delete')
-    await sut.handle({ id: 'any_id' })
-    expect(deleteSpy).toHaveBeenCalledWith('any_id')
+    const request = makeRequest()
+    await sut.handle(request)
+    expect(deleteSpy).toHaveBeenCalledWith(request.id)
   })
 
   test('Should return 404 if deleteUser returns null', async () => {
     const { sut, deleteUserStub } = makeSut()
     jest.spyOn(deleteUserStub, 'delete').mockReturnValueOnce(Promise.resolve(null))
-    const httpResponse = await sut.handle({ id: 'any_id' })
+    const request = makeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(notFound())
   })
 
@@ -60,7 +68,15 @@ describe('DeleteUser Controller', () => {
     jest.spyOn(deleteUserStub, 'delete').mockImplementationOnce(async () => {
       return Promise.reject(new Error())
     })
-    const httpResponse = await sut.handle({ id: 'any_id' })
+    const request = makeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const request = makeRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(ok(`User with id: ${request.id} deleted`))
   })
 })
