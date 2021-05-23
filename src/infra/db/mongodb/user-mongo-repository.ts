@@ -1,7 +1,5 @@
 import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository } from '@/data/protocols'
-import { User } from '@/domain/models'
 import { MongoHelper } from './mongo-helper'
-import { ObjectId } from 'mongodb'
 
 export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository {
   async register (data: RegisterUserRepository.Params): Promise<boolean> {
@@ -26,19 +24,19 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
   async loadByEmail (email: string): Promise<LoadUserByEmailRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
     const user = await userCollection.findOne({ email })
-    return user && MongoHelper.map(user)
+    return user
   }
 
-  async loadById (id: string): Promise<User> {
+  async loadById (id: string): Promise<LoadUserByIdRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
-    const user = await userCollection.findOne({ _id: new ObjectId(id) })
-    return user && MongoHelper.map(user)
+    const user = await userCollection.findOne({ id })
+    return user
   }
 
   async updateAccessToken (id: string, token: string): Promise<void> {
     const userCollection = await MongoHelper.getCollection('users')
     await userCollection.findOneAndUpdate(
-      { _id: id },
+      { id },
       {
         $set: {
           accessToken: token
@@ -49,6 +47,6 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
   async loadAll (): Promise<LoadUsersRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
     const users = await userCollection.find().toArray()
-    return users && MongoHelper.mapCollection(users)
+    return users
   }
 }

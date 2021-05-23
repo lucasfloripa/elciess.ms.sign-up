@@ -1,6 +1,6 @@
 import { UserMongoRepository } from '@/infra/db/mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
-import { mockRegisterUserParams } from '@/tests/domain/mocks'
+import { mockRegisterUserRepositoryParams } from '@/tests/data/mocks'
 
 import { Collection } from 'mongodb'
 
@@ -27,75 +27,70 @@ describe('UserMongo Repository', () => {
   describe('register()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const isValid = await sut.register({
-        id: 'any_id',
-        ...mockRegisterUserParams()
-      })
-      expect(isValid).toBe(true)
+      const isValid = await sut.register(mockRegisterUserRepositoryParams())
+      expect(isValid).toBeTruthy()
     })
   })
 
   describe('checkByEmail()', () => {
     test('Should return true if the user was found', async () => {
       const sut = makeSut()
-      const registerUserParams = mockRegisterUserParams()
+      const registerUserParams = mockRegisterUserRepositoryParams()
       await userCollection.insertOne(registerUserParams)
       const exist = await sut.checkByEmail(registerUserParams.email)
-      expect(exist).toBe(true)
+      expect(exist).toBeTruthy()
     })
 
     test('Should return false if the user was not found', async () => {
       const sut = makeSut()
       const exist = await sut.checkByEmail('any_email@mail.com')
-      expect(exist).toBe(false)
+      expect(exist).toBeFalsy()
     })
   })
 
   describe('loadByEmail()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const registerUserParams = mockRegisterUserParams()
+      const registerUserParams = mockRegisterUserRepositoryParams()
       await userCollection.insertOne(registerUserParams)
       const user = await sut.loadByEmail(registerUserParams.email)
       expect(user).toBeTruthy()
-      expect(user.id).toBeTruthy()
       expect(user.email).toBe(registerUserParams.email)
-      expect(user.password).toBe(registerUserParams.password)
     })
 
     test('Should return null if the user was not found', async () => {
       const sut = makeSut()
-      const exist = await sut.loadByEmail('any_email@mail.com')
-      expect(exist).toBe(null)
+      const exist = await sut.loadByEmail('invalid_email@mail.com')
+      expect(exist).toBeNull()
     })
   })
 
   describe('loadById()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const registerUserParams = mockRegisterUserParams()
+      const registerUserParams = mockRegisterUserRepositoryParams()
       await userCollection.insertOne(registerUserParams)
-      const fakeUser = await userCollection.findOne({ email: registerUserParams.email })
-      const exist = await sut.loadById(fakeUser._id)
+      const exist = await sut.loadById(registerUserParams.id)
       expect(exist).toBeTruthy()
+      expect(exist.id).toBe(registerUserParams.id)
     })
 
     test('Should return null if user was not found', async () => {
       const sut = makeSut()
-      const exist = await sut.loadById('609c2f591bbd02004286b2da')
-      expect(exist).toBeFalsy()
+      const exist = await sut.loadById('invalid_id')
+      expect(exist).toBeNull()
     })
   })
 
   describe('updateAccessToken()', () => {
     test('Should update user accessToken on success', async () => {
       const sut = makeSut()
-      const res = await userCollection.insertOne(mockRegisterUserParams())
+      const res = await userCollection.insertOne(mockRegisterUserRepositoryParams())
       const fakeAccount = res.ops[0]
       expect(fakeAccount.accessToken).toBeFalsy()
       const accessToken = 'any_access_token'
-      await sut.updateAccessToken(fakeAccount._id, accessToken)
-      const account = await userCollection.findOne({ _id: fakeAccount._id })
+      await sut.updateAccessToken(fakeAccount.id, accessToken)
+      const account = await userCollection.findOne({ id: fakeAccount.id })
       expect(account).toBeTruthy()
       expect(account.accessToken).toBe(accessToken)
     })
@@ -104,17 +99,16 @@ describe('UserMongo Repository', () => {
   describe('loadAll()', () => {
     test('Should return an list of users on success', async () => {
       const sut = makeSut()
-      const registerUserParams = mockRegisterUserParams()
+      const registerUserParams = mockRegisterUserRepositoryParams()
       await userCollection.insertOne(registerUserParams)
       await userCollection.insertOne({
-        email: 'other_email@mail.com',
-        password: 'other_password'
+        id: 'generated_id2',
+        email: 'any_email2@mail.com',
+        password: 'any_password2'
       })
       const users = await sut.loadAll()
       expect(users[0]).toBeTruthy()
       expect(users[1]).toBeTruthy()
-      expect(users[0].id).toBeTruthy()
-      expect(users[1].id).toBeTruthy()
     })
 
     test('Should load empty list', async () => {
