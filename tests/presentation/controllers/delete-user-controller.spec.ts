@@ -1,5 +1,5 @@
 import { DeleteUserController } from '@/presentation/controllers'
-import { notFound, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, serverError } from '@/presentation/helpers'
 import { Validation } from '@/presentation/protocols'
 import { DeleteUser } from '@/domain/usecases'
 import { mockValidationStub } from '@/tests/utils/mocks'
@@ -32,6 +32,13 @@ describe('DeleteUser Controller', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle({ id: 'any_id' })
     expect(validateSpy).toHaveBeenCalledWith({ id: 'any_id' })
+  })
+
+  test('Should return 400 if validation returns an error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpResponse = await sut.handle({ id: 'any_id' })
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
   test('Should call deleteUser with correct id', async () => {
