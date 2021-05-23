@@ -1,5 +1,5 @@
 import { DeleteUserController } from '@/presentation/controllers'
-import { notFound } from '@/presentation/helpers'
+import { notFound, serverError } from '@/presentation/helpers'
 import { DeleteUser } from '@/domain/usecases'
 
 const mockDeleteUser = (): DeleteUser => {
@@ -35,5 +35,14 @@ describe('DeleteUser Controller', () => {
     jest.spyOn(deleteUserStub, 'delete').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle({ id: 'any_id' })
     expect(httpResponse).toEqual(notFound())
+  })
+
+  test('Should return 500 if deleteUser throws', async () => {
+    const { sut, deleteUserStub } = makeSut()
+    jest.spyOn(deleteUserStub, 'delete').mockImplementationOnce(async () => {
+      return Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle({ id: 'any_id' })
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
