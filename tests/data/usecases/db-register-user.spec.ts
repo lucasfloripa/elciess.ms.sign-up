@@ -43,6 +43,13 @@ describe('DbRegisterUser Data Usecase', () => {
     expect(generateSpy).toHaveBeenCalled()
   })
 
+  test('Should throw if idGenerator throws', async () => {
+    const { sut, idGeneratorStub } = makeSut()
+    jest.spyOn(idGeneratorStub, 'generate').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.register(mockRequest())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call registerUserRepository with correct values', async () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
