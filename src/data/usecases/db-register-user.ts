@@ -14,9 +14,9 @@ export class DbRegisterUser implements RegisterUser {
     const exist = await this.checkUserByEmailRepository.checkByEmail(email)
     let isValid = false
     if (!exist) {
-      await this.idGenerator.generate()
+      const id = await this.idGenerator.generate()
       const hashedPassword = await this.hasher.hash(password)
-      isValid = await this.registerUserRepository.register({ email, password: hashedPassword })
+      isValid = await this.registerUserRepository.register({ id, email, password: hashedPassword })
     }
     return isValid
   }
