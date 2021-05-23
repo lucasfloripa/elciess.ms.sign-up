@@ -35,4 +35,11 @@ describe('DbDeleteUser Data Usecase', () => {
     const exist = await sut.delete('any_id')
     expect(exist).toBeNull()
   })
+
+  test('Should throw if deleteUserByIdRepository throws', async () => {
+    const { sut, deleteUserByIdRepository } = makeSut()
+    jest.spyOn(deleteUserByIdRepository, 'deleteById').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.delete('any_id')
+    await expect(promise).rejects.toThrow()
+  })
 })
