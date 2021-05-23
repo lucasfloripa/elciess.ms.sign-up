@@ -1,16 +1,7 @@
 import { RegisterUser } from '@/domain/usecases'
 import { RegisterUserRepository, CheckUserByEmailRepository, Hasher, IdGenerator } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
-import { mockRegisterUserRepositoryStub, mockCheckUserByEmailRepositoryStub, mockHasherStub, mockRegisterUserRepositoryParams } from '@/tests/data/mocks'
-
-const mockIdGeneratorStub = (): IdGenerator => {
-  class IdGeneratorStub implements IdGenerator {
-    async generate (): Promise<string> {
-      return 'generated_id'
-    }
-  }
-  return new IdGeneratorStub()
-}
+import { mockRegisterUserRepositoryStub, mockCheckUserByEmailRepositoryStub, mockHasherStub, mockRegisterUserRepositoryParams, mockIdGeneratorStub } from '@/tests/data/mocks'
 
 const mockRequest = (): RegisterUser.Params => ({
   email: 'any_email@mail.com',
