@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, notFound, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 import { DeleteUser } from '@/domain/usecases'
 
 export class DeleteUserController implements Controller {
@@ -18,7 +18,7 @@ export class DeleteUserController implements Controller {
       if (!exist) {
         return notFound()
       }
-      return null
+      return ok(`User with id: ${request.id} deleted`)
     } catch (error) {
       return serverError(error)
     }
