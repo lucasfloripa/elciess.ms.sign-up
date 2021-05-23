@@ -27,7 +27,10 @@ describe('UserMongo Repository', () => {
   describe('register()', () => {
     test('Should return an user on success', async () => {
       const sut = makeSut()
-      const isValid = await sut.register(mockRegisterUserParams())
+      const isValid = await sut.register({
+        id: 'any_id',
+        ...mockRegisterUserParams()
+      })
       expect(isValid).toBe(true)
     })
   })
