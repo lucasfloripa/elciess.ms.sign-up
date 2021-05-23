@@ -2,11 +2,12 @@ import { RegisterUser } from '@/domain/usecases'
 import { RegisterUserRepository, CheckUserByEmailRepository, Hasher, IdGenerator } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
 import { mockRegisterUserRepositoryStub, mockCheckUserByEmailRepositoryStub, mockHasherStub } from '@/tests/data/mocks'
+import { mockRegisterUserRepositoryParams } from '@/tests/domain/mocks'
 
 const mockIdGeneratorStub = (): IdGenerator => {
   class IdGeneratorStub implements IdGenerator {
     async generate (): Promise<string> {
-      return 'any_id'
+      return 'generated_id'
     }
   }
   return new IdGeneratorStub()
@@ -54,11 +55,7 @@ describe('DbRegisterUser Data Usecase', () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
     await sut.register(mockRequest())
-    expect(registerSpy).toBeCalledWith({
-      id: 'any_id',
-      email: mockRequest().email,
-      password: 'hashed_password'
-    })
+    expect(registerSpy).toBeCalledWith(mockRegisterUserRepositoryParams())
   })
 
   test('Should return false if registerUserRepository returns false', async () => {
