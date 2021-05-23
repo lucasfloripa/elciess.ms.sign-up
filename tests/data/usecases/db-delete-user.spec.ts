@@ -22,10 +22,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbDeleteUser Data Usecase', () => {
-  test('Should call deleteUserRepository with correct id', async () => {
+  test('Should call deleteUserByIdRepository with correct id', async () => {
     const { sut, deleteUserByIdRepository } = makeSut()
     const deleteByIdSpy = jest.spyOn(deleteUserByIdRepository, 'deleteById')
     await sut.delete('any_id')
     expect(deleteByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('Should return null if deleteUserByIdRepository returns null', async () => {
+    const { sut, deleteUserByIdRepository } = makeSut()
+    jest.spyOn(deleteUserByIdRepository, 'deleteById').mockReturnValueOnce(Promise.resolve(null))
+    const exist = await sut.delete('any_id')
+    expect(exist).toBeNull()
   })
 })
