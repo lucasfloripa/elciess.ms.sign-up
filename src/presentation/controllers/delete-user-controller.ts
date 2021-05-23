@@ -1,5 +1,5 @@
 import { Controller, HttpResponse } from '@/presentation/protocols'
-import { notFound } from '@/presentation/helpers'
+import { notFound, serverError } from '@/presentation/helpers'
 import { DeleteUser } from '@/domain/usecases'
 
 export class DeleteUserController implements Controller {
@@ -8,9 +8,14 @@ export class DeleteUserController implements Controller {
   ) { }
 
   async handle (request: DeleteUserController.Params): Promise<HttpResponse> {
-    const exist = await this.deleteUser.delete(request.id)
-    if (!exist) {
-      return notFound()
+    try {
+      const exist = await this.deleteUser.delete(request.id)
+      if (!exist) {
+        return notFound()
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
   }
 }
