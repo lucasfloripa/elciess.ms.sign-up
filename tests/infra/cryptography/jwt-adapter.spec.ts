@@ -1,4 +1,5 @@
 import { JwtAdapter } from '@/infra/cryptography'
+
 import env from '@/main/config/env'
 import jwt from 'jsonwebtoken'
 
@@ -15,7 +16,7 @@ const makeSut = (): JwtAdapter => {
   return new JwtAdapter()
 }
 
-describe('JwtAdapter', () => {
+describe('Jwt Adapter', () => {
   describe('encrypt()', () => {
     test('Should call encrypt with correct values', async () => {
       const sut = makeSut()

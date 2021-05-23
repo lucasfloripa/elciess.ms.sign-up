@@ -1,4 +1,5 @@
 import { BcryptAdapter } from '@/infra/cryptography'
+
 import bcrypt from 'bcrypt'
 
 jest.mock('bcrypt', () => ({
@@ -15,7 +16,7 @@ const makeSut = (): BcryptAdapter => {
   return new BcryptAdapter(salt)
 }
 
-describe('BcryptAdapter', () => {
+describe('Bcrypt Adapter', () => {
   describe('hash()', () => {
     test('Should call hash with correct values', async () => {
       const sut = makeSut()

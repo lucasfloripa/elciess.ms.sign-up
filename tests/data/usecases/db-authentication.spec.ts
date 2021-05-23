@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
   return { sut, loadUserByEmailRepositoryStub, hashComparerStub, encrypterStub, updateUserAccessTokenRepositoryStub }
 }
 
-describe('DbAuthentication', () => {
+describe('DbAuthentication Data Usecase', () => {
   test('Should call loadUserByEmailRepository with correct value', async () => {
     const { sut, loadUserByEmailRepositoryStub } = makeSut()
     const loadByEmailSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
@@ -36,8 +36,8 @@ describe('DbAuthentication', () => {
   test('Should return null if loadUserByEmailRepository returns null', async () => {
     const { sut, loadUserByEmailRepositoryStub } = makeSut()
     jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null))
-    const accessToken = await sut.auth(mockRequest())
-    expect(accessToken).toBeNull()
+    const user = await sut.auth(mockRequest())
+    expect(user).toBeNull()
   })
 
   test('Should throw if loadUserByEmailRepository throws', async () => {
@@ -58,8 +58,8 @@ describe('DbAuthentication', () => {
   test('Should return null if hashComparer fails', async () => {
     const { sut, hashComparerStub } = makeSut()
     jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(null))
-    const accessToken = await sut.auth(mockRequest())
-    expect(accessToken).toBeNull()
+    const isValid = await sut.auth(mockRequest())
+    expect(isValid).toBeNull()
   })
 
   test('Should throw if hashComparer throws', async () => {

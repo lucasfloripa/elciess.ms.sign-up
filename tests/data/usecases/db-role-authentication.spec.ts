@@ -1,16 +1,7 @@
 import { DbRoleAuthentication } from '@/data/usecases'
 import { Decrypter, LoadUserByIdRepository } from '@/data/protocols'
 import { mockUserModel } from '@/tests/domain/mocks'
-import { mockLoadUserByIdRepository } from '@/tests/data/mocks'
-
-const makeDecrypterStub = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt (text: string): Promise<any> {
-      return { id: 'any_id' }
-    }
-  }
-  return new DecrypterStub()
-}
+import { mockDecrypterStub, mockLoadUserByIdRepository } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DbRoleAuthentication
@@ -19,7 +10,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const decrypterStub = makeDecrypterStub()
+  const decrypterStub = mockDecrypterStub()
   const loadUserByIdRepositoryStub = mockLoadUserByIdRepository()
   const sut = new DbRoleAuthentication(decrypterStub, loadUserByIdRepositoryStub)
   return { sut, decrypterStub, loadUserByIdRepositoryStub }
@@ -36,8 +27,8 @@ describe('DbRoleAuthentication Data Usecase', () => {
   test('Should return null if Decrypter returns null', async () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
-    const user = await sut.auth('any_token', 'any_role')
-    expect(user).toBe(null)
+    const decrypt = await sut.auth('any_token', 'any_role')
+    expect(decrypt).toBeNull()
   })
 
   test('Should throw if Decrypter throws', async () => {
@@ -58,7 +49,7 @@ describe('DbRoleAuthentication Data Usecase', () => {
     const { sut, loadUserByIdRepositoryStub } = makeSut()
     jest.spyOn(loadUserByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
     const user = await sut.auth('any_token', 'any_role')
-    expect(user).toBe(null)
+    expect(user).toBeNull()
   })
 
   test('Should return null if loadUserByIdRepository returns an user without role', async () => {
@@ -69,7 +60,7 @@ describe('DbRoleAuthentication Data Usecase', () => {
       password: 'any_password'
     }))
     const user = await sut.auth('any_token', 'any_role')
-    expect(user).toBe(null)
+    expect(user).toBeNull()
   })
 
   test('Should throw if loadUserByIdRepository throws', async () => {

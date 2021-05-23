@@ -1,6 +1,7 @@
 import { UserMongoRepository } from '@/infra/db/mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
 import { mockRegisterUserParams } from '@/tests/domain/mocks'
+
 import { Collection } from 'mongodb'
 
 const makeSut = (): UserMongoRepository => {
@@ -9,7 +10,7 @@ const makeSut = (): UserMongoRepository => {
 
 let userCollection: Collection
 
-describe('UserMongoRepository', () => {
+describe('UserMongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })

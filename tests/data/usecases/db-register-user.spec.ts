@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
   return { sut, registerUserRepositoryStub, checkUserByEmailRepositoryStub, hasherStub }
 }
 
-describe('DbRegisterUser', () => {
+describe('DbRegisterUser Data Usecase', () => {
   test('Should call registerUserRepository with correct values', async () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
@@ -38,8 +38,8 @@ describe('DbRegisterUser', () => {
   test('Should return false if registerUserRepository returns false', async () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     jest.spyOn(registerUserRepositoryStub, 'register').mockReturnValueOnce(Promise.resolve(false))
-    const user = await sut.register(mockRequest())
-    expect(user).toBe(false)
+    const isValid = await sut.register(mockRequest())
+    expect(isValid).toBe(false)
   })
 
   test('Should throw if registerUserRepository throws', async () => {
@@ -49,21 +49,21 @@ describe('DbRegisterUser', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call loadUserByEmailRepository with correct value', async () => {
+  test('Should call checkUserByEmailRepository with correct value', async () => {
     const { sut, checkUserByEmailRepositoryStub } = makeSut()
     const loadByEmailSpy = jest.spyOn(checkUserByEmailRepositoryStub, 'checkByEmail')
     await sut.register(mockRequest())
     expect(loadByEmailSpy).toBeCalledWith(mockRequest().email)
   })
 
-  test('Should return false if loadUserByEmailRepository success', async () => {
+  test('Should return false if checkUserByEmailRepository success', async () => {
     const { sut, checkUserByEmailRepositoryStub } = makeSut()
     jest.spyOn(checkUserByEmailRepositoryStub, 'checkByEmail').mockImplementationOnce(async () => await Promise.resolve(true))
-    const user = await sut.register(mockRequest())
-    expect(user).toBe(false)
+    const exist = await sut.register(mockRequest())
+    expect(exist).toBe(false)
   })
 
-  test('Should throw if loadUserByEmailRepository throws', async () => {
+  test('Should throw if checkUserByEmailRepository throws', async () => {
     const { sut, checkUserByEmailRepositoryStub } = makeSut()
     jest.spyOn(checkUserByEmailRepositoryStub, 'checkByEmail').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.register(mockRequest())
@@ -86,7 +86,7 @@ describe('DbRegisterUser', () => {
 
   test('Should return true on success', async () => {
     const { sut } = makeSut()
-    const user = await sut.register(mockRequest())
-    expect(user).toBe(true)
+    const isValid = await sut.register(mockRequest())
+    expect(isValid).toBe(true)
   })
 })
