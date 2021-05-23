@@ -1,7 +1,16 @@
 import { RegisterUser } from '@/domain/usecases'
-import { RegisterUserRepository, CheckUserByEmailRepository, Hasher } from '@/data/protocols'
+import { RegisterUserRepository, CheckUserByEmailRepository, Hasher, IdGenerator } from '@/data/protocols'
 import { DbRegisterUser } from '@/data/usecases'
 import { mockRegisterUserRepositoryStub, mockCheckUserByEmailRepositoryStub, mockHasherStub } from '@/tests/data/mocks'
+
+const mockIdGeneratorStub = (): IdGenerator => {
+  class IdGeneratorStub implements IdGenerator {
+    async generate (): Promise<string> {
+      return 'any_id'
+    }
+  }
+  return new IdGeneratorStub()
+}
 
 const mockRequest = (): RegisterUser.Params => ({
   email: 'any_email@mail.com',
@@ -10,21 +19,30 @@ const mockRequest = (): RegisterUser.Params => ({
 
 type SutTypes = {
   sut: DbRegisterUser
+  idGeneratorStub: IdGenerator
   registerUserRepositoryStub: RegisterUserRepository
   checkUserByEmailRepositoryStub: CheckUserByEmailRepository
   hasherStub: Hasher
 }
 
 const makeSut = (): SutTypes => {
+  const idGeneratorStub = mockIdGeneratorStub()
   const registerUserRepositoryStub = mockRegisterUserRepositoryStub()
   const checkUserByEmailRepositoryStub = mockCheckUserByEmailRepositoryStub()
   const hasherStub = mockHasherStub()
-  const sut = new DbRegisterUser(registerUserRepositoryStub, checkUserByEmailRepositoryStub, hasherStub)
+  const sut = new DbRegisterUser(idGeneratorStub, registerUserRepositoryStub, checkUserByEmailRepositoryStub, hasherStub)
   jest.spyOn(checkUserByEmailRepositoryStub, 'checkByEmail').mockImplementation(async () => await Promise.resolve(null))
-  return { sut, registerUserRepositoryStub, checkUserByEmailRepositoryStub, hasherStub }
+  return { sut, registerUserRepositoryStub, checkUserByEmailRepositoryStub, hasherStub, idGeneratorStub }
 }
 
 describe('DbRegisterUser Data Usecase', () => {
+  test('Should call idGenerator correctly', async () => {
+    const { sut, idGeneratorStub } = makeSut()
+    const generateSpy = jest.spyOn(idGeneratorStub, 'generate')
+    await sut.register(mockRequest())
+    expect(generateSpy).toHaveBeenCalled()
+  })
+
   test('Should call registerUserRepository with correct values', async () => {
     const { sut, registerUserRepositoryStub } = makeSut()
     const registerSpy = jest.spyOn(registerUserRepositoryStub, 'register')
