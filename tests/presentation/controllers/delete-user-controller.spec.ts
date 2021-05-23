@@ -1,6 +1,8 @@
 import { DeleteUserController } from '@/presentation/controllers'
 import { notFound, serverError } from '@/presentation/helpers'
+import { Validation } from '@/presentation/protocols'
 import { DeleteUser } from '@/domain/usecases'
+import { mockValidationStub } from '@/tests/utils/mocks'
 
 const mockDeleteUser = (): DeleteUser => {
   class DeleteUserStub implements DeleteUser {
@@ -14,15 +16,24 @@ const mockDeleteUser = (): DeleteUser => {
 type SutTypes = {
   sut: DeleteUserController
   deleteUserStub: DeleteUser
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const deleteUserStub = mockDeleteUser()
-  const sut = new DeleteUserController(deleteUserStub)
-  return { sut, deleteUserStub }
+  const validationStub = mockValidationStub()
+  const sut = new DeleteUserController(validationStub, deleteUserStub)
+  return { sut, deleteUserStub, validationStub }
 }
 
 describe('DeleteUser Controller', () => {
+  test('Should call validation with correct value', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle({ id: 'any_id' })
+    expect(validateSpy).toHaveBeenCalledWith({ id: 'any_id' })
+  })
+
   test('Should call deleteUser with correct id', async () => {
     const { sut, deleteUserStub } = makeSut()
     const deleteSpy = jest.spyOn(deleteUserStub, 'delete')
