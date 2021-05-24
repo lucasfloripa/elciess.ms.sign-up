@@ -11,14 +11,15 @@ let userCollection: Collection
 
 const mockAccessToken = async (): Promise<string> => {
   const res = await userCollection.insertOne({
+    id: 'generated_id',
     email: 'lucasg.admin@gmail.com',
     password: '123',
     role: 'admin'
   })
-  const id = res.ops[0]._id
+  const id = res.ops[0].id
   const accessToken = sign({ id }, env.jwtSecret)
   await userCollection.updateOne({
-    _id: id
+    id
   }, {
     $set: {
       accessToken
