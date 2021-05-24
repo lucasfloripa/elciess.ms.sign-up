@@ -19,4 +19,13 @@ describe('Uuid Adapter', () => {
     await sut.generate()
     expect(generateSpy).toHaveBeenCalled()
   })
+
+  test('Should throw if generate throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(uuid, 'v4').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.generate()
+    await expect(promise).rejects.toThrow()
+  })
 })
