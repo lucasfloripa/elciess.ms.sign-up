@@ -28,4 +28,10 @@ describe('Uuid Adapter', () => {
     const promise = sut.generate()
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a v4 uuid on generate success', async () => {
+    const sut = makeSut()
+    const accessToken = await sut.generate()
+    expect(accessToken).toBe('v4_id')
+  })
 })
