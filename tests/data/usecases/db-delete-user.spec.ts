@@ -23,7 +23,7 @@ describe('DbDeleteUser Data Usecase', () => {
 
   test('Should return false if deleteUserByIdRepository returns false', async () => {
     const { sut, deleteUserByIdRepository } = makeSut()
-    jest.spyOn(deleteUserByIdRepository, 'deleteById').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(deleteUserByIdRepository, 'deleteById').mockReturnValueOnce(Promise.resolve(false))
     const exist = await sut.delete('any_id')
     expect(exist).toBeFalsy()
   })

@@ -117,4 +117,14 @@ describe('UserMongo Repository', () => {
       expect(users.length).toBe(0)
     })
   })
+
+  describe('deleteById()', () => {
+    test('Should delete an user on success', async () => {
+      const sut = makeSut()
+      const registerUserParams = mockRegisterUserRepositoryParams()
+      await userCollection.insertOne(registerUserParams)
+      const wasDeleted = await sut.deleteById(registerUserParams.id)
+      expect(wasDeleted).toBeTruthy()
+    })
+  })
 })
