@@ -1,7 +1,7 @@
-import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository } from '@/data/protocols'
+import { RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository, DeleteUserByIdRepository } from '@/data/protocols'
 import { MongoHelper } from './mongo-helper'
 
-export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository {
+export class UserMongoRepository implements RegisterUserRepository, CheckUserByEmailRepository, LoadUserByEmailRepository, UpdateUserAccessTokenRepository, LoadUsersRepository, LoadUserByIdRepository, DeleteUserByIdRepository {
   async register (data: RegisterUserRepository.Params): Promise<boolean> {
     const userCollection = await MongoHelper.getCollection('users')
     const result = await userCollection.insertOne(data)
@@ -45,5 +45,15 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
   async loadAll (): Promise<LoadUsersRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
     return await userCollection.find().toArray()
+  }
+
+  async deleteById (userId: string): Promise<boolean> {
+    const userCollection = await MongoHelper.getCollection('users')
+    const wasDeleted = await userCollection.deleteOne({ id: userId })
+    if (wasDeleted.deletedCount === 1) {
+      return true
+    } else {
+      return false
+    }
   }
 }
