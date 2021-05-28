@@ -126,5 +126,11 @@ describe('UserMongo Repository', () => {
       const wasDeleted = await sut.deleteById(registerUserParams.id)
       expect(wasDeleted).toBeTruthy()
     })
+
+    test('Should return false if user has not deleted', async () => {
+      const sut = makeSut()
+      const wasDeleted = await sut.deleteById('any_id')
+      expect(wasDeleted).toBeFalsy()
+    })
   })
 })
