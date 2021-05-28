@@ -1,14 +1,6 @@
 import { DbDeleteUser } from '@/data/usecases'
 import { DeleteUserByIdRepository } from '@/data/protocols'
-
-const mockDeleteUserByIdRepository = (): DeleteUserByIdRepository => {
-  class DeleteUserByIdRepositoryStub implements DeleteUserByIdRepository {
-    async deleteById (userId: string): Promise<boolean> {
-      return true
-    }
-  }
-  return new DeleteUserByIdRepositoryStub()
-}
+import { mockDeleteUserByIdRepository } from '@/tests/data/mocks'
 
 type SutTypes = {
   deleteUserByIdRepository: DeleteUserByIdRepository
@@ -29,11 +21,11 @@ describe('DbDeleteUser Data Usecase', () => {
     expect(deleteByIdSpy).toHaveBeenCalledWith('any_id')
   })
 
-  test('Should return null if deleteUserByIdRepository returns null', async () => {
+  test('Should return false if deleteUserByIdRepository returns false', async () => {
     const { sut, deleteUserByIdRepository } = makeSut()
     jest.spyOn(deleteUserByIdRepository, 'deleteById').mockReturnValueOnce(Promise.resolve(null))
     const exist = await sut.delete('any_id')
-    expect(exist).toBeNull()
+    expect(exist).toBeFalsy()
   })
 
   test('Should throw if deleteUserByIdRepository throws', async () => {
