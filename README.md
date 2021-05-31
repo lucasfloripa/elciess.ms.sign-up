@@ -17,3 +17,4 @@ TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 1. [Authentication](./requirements/authentication.md)
 2. [Register User](./requirements/register-user.md)
 3. [Load Users](./requirements/load-users.md)
+3. [Delete User](./requirements/delete-user.md)
