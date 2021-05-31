@@ -18,7 +18,7 @@ export class DeleteUserController implements Controller {
       if (!exist) {
         return notFound()
       }
-      return ok(`User with id: ${request.id} deleted`)
+      return ok({ message: `User with id: ${request.id} deleted` })
     } catch (error) {
       return serverError(error)
     }

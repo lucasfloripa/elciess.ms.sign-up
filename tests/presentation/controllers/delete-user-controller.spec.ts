@@ -69,6 +69,6 @@ describe('DeleteUser Controller', () => {
     const { sut } = makeSut()
     const request = makeRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(ok(`User with id: ${request.id} deleted`))
+    expect(httpResponse).toEqual(ok({ message: `User with id: ${request.id} deleted` }))
   })
 })
