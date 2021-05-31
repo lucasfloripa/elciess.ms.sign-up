@@ -158,5 +158,21 @@ describe('Auth Routes', () => {
         })
         .expect(403)
     })
+
+    test('Should return 200 on delete user with valid admin accessToken', async () => {
+      const accessToken = await mockAccessToken()
+      await userCollection.insertOne({
+        id: 'any_id_to_delete',
+        email: 'test@test.com',
+        password: '123'
+      })
+      await request(app)
+        .delete('/api/delete')
+        .set('x-access-token', accessToken)
+        .send({
+          id: 'any_id_to_delete'
+        })
+        .expect(200)
+    })
   })
 })
