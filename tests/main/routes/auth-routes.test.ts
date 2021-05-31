@@ -149,29 +149,14 @@ describe('Auth Routes', () => {
         .expect(401)
     })
 
-    // test('Should return 403 on register user without an admin accessToken', async () => {
-    //   await request(app)
-    //     .post('/api/register')
-    //     .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
-    //     .send({
-    //       email: 'lucasg.floripa@gmail.com',
-    //       password: '123',
-    //       passwordConfirmation: '123'
-    //     })
-    //     .expect(403)
-    // })
-
-    // test('Should return 200 on register user with valid admin accessToken', async () => {
-    //   const accessToken = await mockAccessToken()
-    //   await request(app)
-    //     .post('/api/register')
-    //     .set('x-access-token', accessToken)
-    //     .send({
-    //       email: 'juceliog@gmail.com',
-    //       password: '123',
-    //       passwordConfirmation: '123'
-    //     })
-    //     .expect(200)
-    // })
+    test('Should return 403 on delete user without an admin accessToken', async () => {
+      await request(app)
+        .delete('/api/delete')
+        .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
+        .send({
+          id: 'any_id'
+        })
+        .expect(403)
+    })
   })
 })
