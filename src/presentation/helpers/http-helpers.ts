@@ -27,7 +27,7 @@ export const forbidden = (error: Error): HttpResponse => ({
 })
 
 export const notFound = (): HttpResponse => ({
-  statusCode: 401,
+  statusCode: 404,
   body: new NotFoundError()
 })
 
