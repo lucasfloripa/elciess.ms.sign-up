@@ -1,5 +1,6 @@
 export * from './register-user-schema'
 export * from './register-user-params-schema'
+export * from './delete-user-params-schema'
 export * from './auth-schema'
 export * from './auth-params-schema'
 export * from './users-schema'

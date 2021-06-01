@@ -1,30 +1,33 @@
-import { registerUserPath, authPath, usersPath } from './paths'
-import { registerUserSchema, registerUserParamsSchema, authSchema, authParamsSchema, errorSchema, usersSchema, noContentSchema } from './schemas'
-import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse, noContentResponse } from './components'
+import { registerUserPath, authPath, usersPath, deleteUserPath } from './paths'
+import { registerUserSchema, registerUserParamsSchema, authSchema, authParamsSchema, errorSchema, usersSchema, noContentSchema, deleteUserParamsSchema } from './schemas'
+import { badRequestResponse, serverErrorResponse, forbiddenResponse, unauthorizedResponse, noContentResponse, notFoundResponse } from './components'
 
 export default {
   openapi: '3.0.0',
   info: {
-    title: 'Elciess Auth-Controll API',
-    description: 'API to register users and to authenticate them in any other Elciess service.',
+    title: 'Elciess User-Controll API',
     version: '1.0.0'
   },
   servers: [{
     url: '/api'
   }],
   tags: [
-    { name: 'RegisterUser' },
     { name: 'Auth' },
-    { name: 'Get Users' }
+    { name: 'Get Users' },
+    { name: 'Register User' },
+    { name: 'Delete User' }
   ],
   paths: {
-    '/register': registerUserPath,
     '/auth': authPath,
+    '/register': registerUserPath,
+    '/delete': deleteUserPath,
     '/users': usersPath
   },
   schemas: {
     registerUser: registerUserSchema,
     registerUserParams: registerUserParamsSchema,
+    deleteUser: registerUserSchema,
+    deleteUserParams: deleteUserParamsSchema,
     auth: authSchema,
     authParams: authParamsSchema,
     users: usersSchema,
@@ -33,6 +36,7 @@ export default {
   },
   components: {
     noContentResponse,
+    notFoundResponse,
     badRequestResponse,
     serverErrorResponse,
     forbiddenResponse,

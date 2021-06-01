@@ -1,14 +1,11 @@
-export const registerUserParamsSchema = {
+export const authParamsSchema = {
   type: 'object',
-  required: ['email', 'password', 'passwordConfirmation'],
+  required: ['email', 'password'],
   properties: {
     email: {
       type: 'string'
     },
     password: {
-      type: 'string'
-    },
-    passwordConfirmation: {
       type: 'string'
     }
   }

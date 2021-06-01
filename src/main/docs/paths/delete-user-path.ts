@@ -1,11 +1,11 @@
-export const registerUserPath = {
-  post: {
-    tags: ['Register User'],
+export const deleteUserPath = {
+  delete: {
+    tags: ['Delete User'],
     requestBody: {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/registerUserParams'
+            $ref: '#/schemas/deleteUserParams'
           }
         }
       }
@@ -25,7 +25,7 @@ export const registerUserPath = {
         $ref: '#/components/badRequestResponse'
       },
       403: {
-        $ref: '#/components/forbiddenResponse'
+        $ref: '#/components/notFoundResponse'
       },
       500: {
         $ref: '#/components/serverErrorResponse'
