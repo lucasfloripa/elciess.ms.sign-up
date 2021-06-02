@@ -1,6 +1,10 @@
+/* eslint-disable import/first */
 import 'module-alias/register'
-import env from '@/main/config/env'
+import dotenv from 'dotenv'
+dotenv.config({ path: './src/main/config/config.env' })
+
 import { MongoHelper } from '@/infra/db/mongodb'
+import env from '@/main/config/env'
 
 MongoHelper.connect(env.mongoUrl)
   .then(async () => {
