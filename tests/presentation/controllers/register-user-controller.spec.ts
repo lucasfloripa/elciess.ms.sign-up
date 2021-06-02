@@ -8,8 +8,7 @@ import { mockRegisterUserParams } from '@/tests/domain/mocks'
 
 const mockRequest = (): RegisterUserController.Params => ({
   email: 'any_email@mail.com',
-  password: 'any_password',
-  passwordConfirmation: 'any_password'
+  password: 'any_password'
 })
 
 type SutTypes = {

@@ -1,13 +1,12 @@
 import { Validation } from '@/presentation/protocols'
-import { ValidationComposite, RequiredFieldValidation, CompareFieldsValidation, EmailValidation } from '@/utils/validators'
+import { ValidationComposite, RequiredFieldValidation, EmailValidation } from '@/utils/validators'
 import { EmailValidatorAdapter } from '@/infra/validators'
 
 export const makeRegisterUserValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  for (const field of ['email', 'password', 'passwordConfirmation']) {
+  for (const field of ['email', 'password']) {
     validations.push(new RequiredFieldValidation(field))
   }
-  validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))
   validations.push(new EmailValidation('email', new EmailValidatorAdapter()))
   return new ValidationComposite(validations)
 }

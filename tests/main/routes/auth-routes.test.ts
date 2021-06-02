@@ -48,8 +48,7 @@ describe('Auth Routes', () => {
         .post('/api/register')
         .send({
           email: 'lucasg.floripa@gmail.com',
-          password: '123',
-          passwordConfirmation: '123'
+          password: '123'
         })
         .expect(401)
     })
@@ -60,8 +59,7 @@ describe('Auth Routes', () => {
         .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOWMyZjU5MWJiZDAyMDA0Mjg2YjJkYSIsImlhdCI6MTYyMTE5MDM5NX0.sNzfXcTqR1QLszyB1StjC-aCGZ4Uhe-tixs0zFUsw7I')
         .send({
           email: 'lucasg.floripa@gmail.com',
-          password: '123',
-          passwordConfirmation: '123'
+          password: '123'
         })
         .expect(403)
     })
@@ -73,8 +71,7 @@ describe('Auth Routes', () => {
         .set('x-access-token', accessToken)
         .send({
           email: 'juceliog@gmail.com',
-          password: '123',
-          passwordConfirmation: '123'
+          password: '123'
         })
         .expect(200)
     })

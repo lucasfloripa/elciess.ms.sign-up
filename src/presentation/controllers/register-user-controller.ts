@@ -34,6 +34,5 @@ export namespace RegisterUserController {
   export type Params = {
     email: string
     password: string
-    passwordConfirmation: string
   }
 }
