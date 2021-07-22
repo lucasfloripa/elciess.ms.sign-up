@@ -65,5 +65,10 @@
   },
   "engines": {
     "node": "12.x"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.4.1"
+    }
   }
 }
