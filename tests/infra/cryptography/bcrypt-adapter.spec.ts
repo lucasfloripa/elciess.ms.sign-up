@@ -7,7 +7,7 @@ jest.mock('bcrypt', () => ({
     return 'hash'
   },
   async compare (): Promise<boolean> {
-    return true
+    return Promise.resolve(true)
   }
 }))
 
@@ -51,8 +51,11 @@ describe('Bcrypt Adapter', () => {
 
     test('Should return false if compare fails', async () => {
       const sut = makeSut()
-      jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(Promise.resolve(false))
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => {
+        return Promise.resolve(false)
+      })
       const isValid = await sut.compare('any_hash', 'hash_to_compare')
+      console.log('isValid', isValid)
       expect(isValid).toBe(false)
     })
 
