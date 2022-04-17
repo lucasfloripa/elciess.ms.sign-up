@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config({ path: './src/main/config/config.env' })
 
 import { MongoHelper } from '@/infra/db/mongodb'
-import env from '@/main/config/env'
+import env from './config/env'
 
 MongoHelper.connect(env.mongoUrl)
   .then(async () => {

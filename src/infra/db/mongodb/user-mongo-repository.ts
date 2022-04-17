@@ -23,12 +23,12 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
 
   async loadByEmail (email: string): Promise<LoadUserByEmailRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
-    return await userCollection.findOne({ email })
+    return await userCollection.findOne({ email }, { projection: { _id: 0 } })
   }
 
   async loadById (id: string): Promise<LoadUserByIdRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
-    return await userCollection.findOne({ id })
+    return await userCollection.findOne({ id }, { projection: { _id: 0 } })
   }
 
   async updateAccessToken (id: string, token: string): Promise<void> {
@@ -44,7 +44,7 @@ export class UserMongoRepository implements RegisterUserRepository, CheckUserByE
 
   async loadAll (): Promise<LoadUsersRepository.Result> {
     const userCollection = await MongoHelper.getCollection('users')
-    return await userCollection.find().toArray()
+    return await userCollection.find({}, { projection: { _id: 0 } }).toArray()
   }
 
   async deleteById (userId: string): Promise<boolean> {
