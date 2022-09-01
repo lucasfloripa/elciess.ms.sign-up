@@ -55,7 +55,6 @@ describe('Bcrypt Adapter', () => {
         return Promise.resolve(false)
       })
       const isValid = await sut.compare('any_hash', 'hash_to_compare')
-      console.log('isValid', isValid)
       expect(isValid).toBe(false)
     })
 
